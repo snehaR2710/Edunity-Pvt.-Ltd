@@ -11,8 +11,6 @@ dotenv.config({
     path: './env'
 });
 
-// app.use('')
-
 
 // cloudinary configuration
 cloudinary.v2.config({
@@ -39,4 +37,8 @@ connectToDb()
 })
 .catch((err) => {
     console.log("Mongo DB connection Faild !!!", err);
+});
+
+app.get("/", (req, res) => {
+    res.json("Hello!!")
 });
