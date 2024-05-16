@@ -10,7 +10,7 @@ const initialState = {
 // Slice to get all courses ("/course/get"  this is name of AsyncThunk)             
 export const getAllCourses = createAsyncThunk("/course/get", async () => {
   try {
-    const response = axiosInstance.get("courses");
+    const response = axiosInstance.get("/courses");
     toast.promise(response, {
         loading: "loading course data...",
         success: "Courses loaded successfully",
@@ -35,7 +35,7 @@ export const createNewCourse = createAsyncThunk("/course/create", async (data) =
     formData.append("createdBy", data?.createdBy)
     formData.append("thumbnail", data?.thumbnail)
 
-    const response = axiosInstance.post("courses", formData);
+    const response = axiosInstance.post("/courses", formData);
     toast.promise(response, {
       loading: "Creating new course",
       success: "Course created successfully",

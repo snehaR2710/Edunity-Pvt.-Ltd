@@ -15,7 +15,7 @@ const initialState = {
 // function to get the api key
 export const getRazorpayId = createAsyncThunk("/razorpayId/get", async () => {
   try {
-    const response = await axiosInstance.get("payments/razopay-key");
+    const response = await axiosInstance.get("/payments/razopay-key");
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -26,7 +26,7 @@ export const getRazorpayId = createAsyncThunk("/razorpayId/get", async () => {
 // function to purchase the course bundle
 export const purchaseCourseBundle = createAsyncThunk("/purchaseCourse", async () => {
     try {
-      const response = await axiosInstance.get("payments/subscribe");
+      const response = await axiosInstance.get("/payments/subscribe");
       // toast.promise(response, {
       //   loading: "Wait a moment!!....",
       //   success: (data) => {
@@ -45,7 +45,7 @@ export const purchaseCourseBundle = createAsyncThunk("/purchaseCourse", async ()
 export const verifyUserPayment = createAsyncThunk("/Payment/verify", async (paymentDetails) => {
   console.log("paymentDetails", paymentDetails);
     try {
-      const response = await axiosInstance.post("payments/verify", {
+      const response = await axiosInstance.post("/payments/verify", {
 
         razorpay_payment_id: paymentDetails.razorpay_payment_id,
         razorpay_subscription_id: paymentDetails.razorpay_subscription_id,
@@ -68,7 +68,7 @@ export const verifyUserPayment = createAsyncThunk("/Payment/verify", async (paym
 
   export const getPaymentRecord = createAsyncThunk("/Payment/record", async () => {
     try {
-      const response = axiosInstance.get("payments?count=20");
+      const response = axiosInstance.get("/payments?count=20");
       toast.promise(response, {
         loading: "Payment records in progress....",
         success: (data) => {
@@ -85,7 +85,7 @@ export const verifyUserPayment = createAsyncThunk("/Payment/verify", async (paym
 
   export const cancelCourseBundle = createAsyncThunk("/cancel/course", async () => {
     try {
-      const response = axiosInstance.post("payments/unsubscribe");
+      const response = axiosInstance.post("/payments/unsubscribe");
       toast.promise(response, {
         loading: "Unsubscribing the bundle...",
         success: (data) => {
