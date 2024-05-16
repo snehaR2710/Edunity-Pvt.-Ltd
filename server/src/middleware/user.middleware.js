@@ -47,7 +47,7 @@ export const authorizedRoles = (...roles) => async (req, _res, next) => {
 // Middleware to check if user has an active subscription or not
 export const authorizedSubscriber = async (req, _res, next) => {
     const subscription = req.user.subscription.status;
-    console.log("subscription.middleware", req.user);
+    console.log("subscription.middleware", req.user.subscription);
     const currentUserRoles = req.user.role;
     console.log("middleware", currentUserRoles);
 

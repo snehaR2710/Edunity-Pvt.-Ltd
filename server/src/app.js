@@ -41,6 +41,10 @@ app.use("/api/v1/payments", paymentRouter);
 
 app.use("/api/v1", miscRoutes);
 
+app.get("/", (req, res) => {
+  res.json("Hello!!😊")
+});
+
 app.all("*", (_req, res) => {
   res.status(404).send("OOPS!! 404 page not found");
 });

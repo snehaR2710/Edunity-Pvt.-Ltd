@@ -10,6 +10,7 @@ import { connectToDb } from './dbConnection/db.js';
 dotenv.config({
     path: './env'
 });
+const PORT = process.env.PORT || 6001
 
 
 // cloudinary configuration
@@ -31,14 +32,10 @@ connectToDb()
         console.log("Error: ", error);
         throw error;
     });
-    app.listen(process.env.PORT || 5000, () => {
+    app.listen(PORT, () => {
         console.log(`Server is running at port: ${process.env.PORT}`);
     })
 })
 .catch((err) => {
     console.log("Mongo DB connection Faild !!!", err);
-});
-
-app.get("/", (req, res) => {
-    res.json("Hello!!")
 });

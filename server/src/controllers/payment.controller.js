@@ -39,9 +39,14 @@ const buySubscription = async (req, res, next) => {
       return next(new ApiError(400, "ADMIN cannot purchase a subscription"));
     }
 
+    const planId = process.env.RAZORPAY_PLAN_ID
+
+    console.log("planId", planId);
+
+    console.log("before subscription", user.subscription);
     // Creating a subscription using razorpay that we imported from the server
     const subscription = await razorpay.subscriptions.create({
-      plan_id: process.env.RAZORPAY_PLAN_ID,
+      plan_id: planId,
       customer_notify: 1,
       total_count: 12,
     });
@@ -63,6 +68,7 @@ const buySubscription = async (req, res, next) => {
     });
   } catch (error) {
     console.error("Error occurred:", error);
+    console.log(error.message);
     return next(new ApiError(500, error.message || "You are not subscriberd!!"));
   }
 };
