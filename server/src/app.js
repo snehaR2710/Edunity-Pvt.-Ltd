@@ -4,8 +4,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(
-  cors({
+app.use(cors({
     origin: [process.env.FRONTEND_URL],
     credentials: true,
   })
@@ -41,13 +40,13 @@ app.use("/api/v1/payments", paymentRouter);
 
 app.use("/api/v1", miscRoutes);
 
-app.get("/", (req, res) => {
-  res.json("Hello!!😊")
-});
+// app.get("/", (req, res) => {
+//   res.json("Hello!!😊")
+// });
 
-app.all("*", (_req, res) => {
-  res.status(404).send("OOPS!! 404 page not found");
-});
+// app.all("*", (_req, res) => {
+//   res.status(404).send("OOPS!! 404 page not found");
+// });
 
 app.use(errorMiddleware);
 
