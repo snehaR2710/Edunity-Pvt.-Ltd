@@ -7,8 +7,8 @@ import axiosInstance from "../../Helpers/axiosInstance";
 
 const initialState = {
   isLoggedIn: localStorage.getItem('isLoggedIn') || false,
-  role: localStorage.getItem('role') || "",
-  data: localStorage.getItem('data') ? JSON.parse(localStorage.getItem('data')) : {},
+  role: localStorage.getItem('role') || null,
+  data:  localStorage.getItem('data') || null,
   
 };
 

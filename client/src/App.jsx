@@ -13,6 +13,7 @@ import { HomePage } from "./Pages/HomePage";
 import { Login } from "./Pages/Login";
 import { NotFoundPage } from "./Pages/NotFoundpage";
 import Chechout from "./Pages/Payment/Chechout";
+import { CheckoutFail } from "./Pages/Payment/CheckoutFail";
 import { CheckoutSuccess } from "./Pages/Payment/CheckoutSuccess";
 import { Signup } from "./Pages/Signup";
 import EditProfile from "./Pages/User/EditProfile";
@@ -48,6 +49,7 @@ function App() {
           <Route path="/user/edit-profile" element={<EditProfile />}></Route>
           <Route path="/checkout" element={<Chechout />}></Route>
           <Route path="/checkout/success" element={<CheckoutSuccess />}></Route>
+          <Route path="/checkout/fail" element={<CheckoutFail />}></Route>
         </Route>
 
         <Route path="/denied" element={<Denied />}></Route>
