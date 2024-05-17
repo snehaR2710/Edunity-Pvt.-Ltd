@@ -1,8 +1,15 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 
 const app = express();
+
+// Use Helmet to set security-related HTTP headers
+app.use(helmet());
+
+// Set referrer policy
+app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 
 app.use(cors({
     origin: process.env.FRONTEND_URL,
@@ -39,14 +46,6 @@ app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/payments", paymentRouter);
 
 app.use("/api/v1", miscRoutes);
-
-// app.get("/", (req, res) => {
-//   res.json("Hello!!😊")
-// });
-
-// app.all("*", (_req, res) => {
-//   res.status(404).send("OOPS!! 404 page not found");
-// });
 
 app.use(errorMiddleware);
 
