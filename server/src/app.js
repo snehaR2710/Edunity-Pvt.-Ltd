@@ -11,13 +11,11 @@ app.use(helmet());
 // Set referrer policy
 app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 
-console.log('Allowed origin:', process.env.FRONTEND_URL);
-
 
 app.use(cors({
     origin: process.env.FRONTEND_URL1 && process.env.FRONTEND_URL2 && process.env.FRONTEND_URL3,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
   })
 );
 
