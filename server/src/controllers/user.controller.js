@@ -81,12 +81,12 @@ const userRegister = async (req, res, next) => {
   const token = await user.generateJWTToken();
   res.cookie("token", token, cookieOptions);
 
-  const registerUser = await User.findOne({ email });
+  // const registerUser = await User.findOne({ email });
 
   res.status(201).json({
     success: true,
     message: "User register successfully!!",
-    user: registerUser
+    user,
   });
 };
 
