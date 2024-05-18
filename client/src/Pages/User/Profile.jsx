@@ -12,9 +12,9 @@ export default function Profile() {
   console.log("userdata", userData);
 
   useEffect(() => {
-    dispatch(getUserData())
+    // dispatch(getUserData())
   }, [])
-
+// 
   return (
     <HomeLayout>
       <div className="min-h-[90vh] flex items-center justify-center">
