@@ -9,7 +9,6 @@ import HomeLayout from "../../Layouts/HomeLayout";
 import { getUserData, updateProfile } from "../../Redux/Slices/AuthSlice";
 
 export default function EditProfile() {
-
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ export default function EditProfile() {
       setData({
         ...data,
         avatar: uploadedImage,
-      });  
+      });
       const fileReader = new FileReader();
       fileReader.readAsDataURL(uploadedImage);
       fileReader.addEventListener("load", function () {
@@ -43,10 +42,10 @@ export default function EditProfile() {
 
   // function to set the name of user
   const setName = (event) => {
-    const { name, value} = event.target;
+    const { name, value } = event.target;
     const newUserdata = { ...data, [name]: value };
-    setData(newUserdata)
-  }
+    setData(newUserdata);
+  };
 
   async function onFormSubmit(e) {
     e.preventDefault();
@@ -56,21 +55,23 @@ export default function EditProfile() {
     formData.append("fullName", data.fullName);
     formData.append("avatar", data.avatar);
 
-    console.log(formData);
+    // Log FormData contents
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
 
-    const newUserdata = [data.userId, formData]
+    const newUserdata = [data.userId, formData];
 
     // dispatching the api call using the thunk
-    const res =await dispatch(updateProfile(newUserdata));
-    console.log("res",res);
+    const res = await dispatch(updateProfile(newUserdata));
+    console.log("res", res);
 
     // fetching the data to update
     const newUser = await dispatch(getUserData());
     console.log("newUser", newUser);
 
     //if (response?.payload?.success) navigate("/");
-    if(res?.payload?.success === true) navigate("/user/profile")
-    
+    if (res?.payload?.success === true) navigate("/user/profile");
   }
 
   return (

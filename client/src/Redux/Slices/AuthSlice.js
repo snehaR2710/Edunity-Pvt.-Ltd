@@ -71,9 +71,15 @@ export const logout = createAsyncThunk("/auth/logout", async () => {
 // upadate profile slice 
 export const updateProfile = createAsyncThunk("/user/update/profile", async (data, {rejectWithValue}) => {
   try {
-    console.log("edit data", data);
+    const userId = data[0];
+    const formData = data[1];
+    console.log("edit data", userId, " ", formData);
 
-    const res = axiosInstance.put(`/api/v1/users/update/${data[0]}`, data[1]);
+    const res = axiosInstance.put(`/api/v1/users/update/${userId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
     toast.promise(res, {
       loading: "Updating...",
       success: (data) => {
