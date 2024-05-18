@@ -14,8 +14,9 @@ export default function EditProfile() {
 
   const navigate = useNavigate();
 
+  const [previewImage, setImagePreview] = useState("");
+
   const [data, setData] = useState({
-    previewImage: "",
     fullName: "",
     avatar: undefined,
     userId: useSelector((state) => state?.auth?.data?._id),
@@ -26,23 +27,31 @@ export default function EditProfile() {
 
     const uploadedImage = e.target.files[0];
 
+    // if image exists then getting the url link of it
     if (uploadedImage) {
+      setData({
+        ...data,
+        avatar: uploadedImage,
+      });  
       const fileReader = new FileReader();
       fileReader.readAsDataURL(uploadedImage);
       fileReader.addEventListener("load", function () {
-        setData({
-          ...data,
-          previewImage: this.result,
-          avatar: uploadedImage,
-        });
+        setImagePreview(this.result);
       });
     }
   }
 
+  // function to set the name of user
+  const setName = (event) => {
+    const { name, value} = event.target;
+    const newUserdata = { ...data, [name]: value };
+    setData(newUserdata)
+  }
+
   async function onFormSubmit(e) {
     e.preventDefault();
-    // console.log(data);
 
+    // creating the form data from the existing data
     const formData = new FormData();
     formData.append("fullName", data.fullName);
     formData.append("avatar", data.avatar);
@@ -55,23 +64,13 @@ export default function EditProfile() {
     const res =await dispatch(updateProfile(newUserdata));
     console.log("res",res);
 
-    //if (response?.payload?.success) navigate("/");
-    if(res?.payload?.success === true) navigate("/user/profile")
-
-    // navigate("/user/profile");
-
     // fetching the data to update
     const newUser = await dispatch(getUserData());
     console.log("newUser", newUser);
 
+    //if (response?.payload?.success) navigate("/");
+    if(res?.payload?.success === true) navigate("/user/profile")
     
-  }
-
-  // function to set the name of user
-  const setName = (event) => {
-    const { name, value} = event.target;
-    const newUserdata = { ...data, [name]: value };
-    setData(newUserdata)
   }
 
   return (
@@ -85,9 +84,9 @@ export default function EditProfile() {
 
           {/* avatar input */}
           <label htmlFor="image_uploads" className="cursor-pointer">
-            {data.previewImage ? (
+            {previewImage ? (
               <img
-                src={data?.previewImage}
+                src={previewImage}
                 className="w-28 h-28 rounded-full m-auto"
               />
             ) : (

@@ -69,11 +69,11 @@ export const logout = createAsyncThunk("/auth/logout", async () => {
 });
 
 // upadate profile slice 
-export const updateProfile = createAsyncThunk("/user/update/profile", async (data) => {
+export const updateProfile = createAsyncThunk("/user/update/profile", async (data, {rejectWithValue}) => {
   try {
-    console.log(data);
+    console.log("edit data", data);
 
-    const res = axiosInstance.put(`/api/v1/users/update/:${data[0]}`, data[1]);
+    const res = axiosInstance.put(`/api/v1/users/update/${data[0]}`, data[1]);
     toast.promise(res, {
       loading: "Updating...",
       success: (data) => {
@@ -85,7 +85,8 @@ export const updateProfile = createAsyncThunk("/user/update/profile", async (dat
     return (await res).data
     
   } catch (error) {
-    toast.error(error?.res?.data?.message);
+    // toast.error(error?.res?.data?.message);
+    return rejectWithValue(error.response?.data?.message || error.message)
   }
 });
 
