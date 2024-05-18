@@ -91,11 +91,8 @@ export const updateProfile = createAsyncThunk("/user/update/profile", async (dat
 // get user datails
 export const getUserData = createAsyncThunk("/user/details", async () => {
   try {
-
     const res = axiosInstance.get(`/api/v1/users/getuser`);
-
-    return res?.data
-    
+    return res?.data  
   } catch (error) {
     toast.error(error.message);
   }

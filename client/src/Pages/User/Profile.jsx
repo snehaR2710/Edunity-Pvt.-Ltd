@@ -20,24 +20,24 @@ export default function Profile() {
       <div className="min-h-[90vh] flex items-center justify-center">
         <div className="my-10 flex flex-col gap-4 rounded-lg p-4 text-white w-96 shadow-[0_0_10px_black]">
           <img
-            src={userData && userData.avatar.secure_url}
+            src={userData?.avatar.secure_url}
             alt="Avatar"
             className="w-40 m-auto rounded-full border border-black"
           />
           <h3 className="text-2xl font-semibold text-center capitalize text-yellow-500 tracking-wider">
-            {userData && userData.fullName}
+            {userData?.fullName}
           </h3>
           <div className=" flex flex-col gap-1">
             <p className="text-yellow-500">
-              Email: <span className="text-white">{userData && userData.email}</span>
+              Email: <span className="text-white">{userData?.email}</span>
             </p>
             <p className="text-yellow-500">
-              Role: <span className="text-white">{userData && userData.role}</span>
+              Role: <span className="text-white">{userData?.role}</span>
             </p>
             <p className="text-yellow-500">
               Subscription:{" "}
               <span className="text-white">
-                {userData && userData?.subscription?.status === 'active'
+                {userData?.subscription?.status === 'active'
                   ? 'Active'
                   : 'Inactive'}
               </span>
