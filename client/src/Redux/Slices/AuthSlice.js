@@ -5,18 +5,13 @@ import axiosInstance from "../../Helpers/axiosInstance";
 
 // const initialUserData = localStorage.getItem("data");
 
-// const initialState = {
-//   isLoggedIn: localStorage.getItem('isLoggedIn') || false,
-//   role: localStorage.getItem('role') || null,
-//   data:  localStorage.getItem('data') || null,
-  
-// };
-
 const initialState = {
-  isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+  isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn')) || false,
   role: localStorage.getItem('role') || '',
-  data: JSON.parse(localStorage.getItem('data')) || null,
-}
+  data:  JSON.parse(localStorage.getItem('data')) || null,
+  
+};
+
 
 // signup
 export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
@@ -95,13 +90,14 @@ export const updateProfile = createAsyncThunk("/user/update/profile", async (dat
 });
 
 // get user datails
-export const getUserData = createAsyncThunk("/user/details", async () => {
+export const getUserData = createAsyncThunk("/user/details", async ({rejectWithValue}) => {
   try {
     const res = axiosInstance.get(`/api/v1/users/getuser`);
-    console.log("get user", res);
+    console.log("get user", res.data);
     return res.data;
   } catch (error) {
-    toast.error(error.message);
+    // toast.error(error.message);
+    return rejectWithValue(error.response?.data?.message || error.message)
   }
 });
 
@@ -114,35 +110,34 @@ const authSlice = createSlice({
 
       // for user login
       .addCase(login.fulfilled, (state, action) => {
-        console.log(action,"", state);
-        console.log(action?.payload?.user);
+        const user = action?.payload?.user;
 
-        localStorage.setItem("data", JSON.stringify(action?.payload?.user));
-        localStorage.setItem("isLoggedIn",true);
-        localStorage.setItem("role", action?.payload?.user?.role);
+        localStorage.setItem("data", JSON.stringify(user));
+        localStorage.setItem("isLoggedIn","true");
+        localStorage.setItem("role", user?.role);
         state.isLoggedIn = true;
-        state.data = action?.payload?.user;
-        state.role = action?.payload?.user?.role;
+        state.data = user;
+        state.role = user?.role;
       })
 
       // for logout
       .addCase(logout.fulfilled, (state) => {
         localStorage.clear();
-        state.data = {};
+        state.isLoggedIn = false;
+        state.data = null;
+        state.role = '';
       })
 
       // for user details
       .addCase(getUserData.fulfilled, (state, action) => {
-        console.log(action,"", state);
-        console.log(action?.payload?.user);
-        // if(!action?.payload?.user) return
-        
-        localStorage.setItem("data", JSON.stringify(action?.payload?.user));
-        localStorage.setItem("isLoggedIn", true);  // Store boolean value directly
-        localStorage.setItem("role", action?.payload?.user?.role);
+        const user = action?.payload?.user;
+        console.log("in auth slice", user);        
+        localStorage.setItem("data", JSON.stringify(user));
+        localStorage.setItem("isLoggedIn", "true"); 
+        localStorage.setItem("role", user?.role);
         state.isLoggedIn = true
-        state.data = action?.payload?.user
-        state.role = action?.payload?.user?.role
+        state.data = user
+        state.role = user?.role
       });
          
       
