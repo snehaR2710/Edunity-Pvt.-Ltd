@@ -5,12 +5,18 @@ import axiosInstance from "../../Helpers/axiosInstance";
 
 // const initialUserData = localStorage.getItem("data");
 
-const initialState = {
-  isLoggedIn: localStorage.getItem('isLoggedIn') || false,
-  role: localStorage.getItem('role') || null,
-  data:  localStorage.getItem('data') || null,
+// const initialState = {
+//   isLoggedIn: localStorage.getItem('isLoggedIn') || false,
+//   role: localStorage.getItem('role') || null,
+//   data:  localStorage.getItem('data') || null,
   
-};
+// };
+
+const initialState = {
+  isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+  role: localStorage.getItem('role') || '',
+  data: JSON.parse(localStorage.getItem('data')) || null,
+}
 
 // signup
 export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
@@ -129,8 +135,6 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         localStorage.clear();
         state.data = {};
-        state.isLoggedIn = false;
-        // state.role = "";
       })
 
       // for user details
@@ -140,7 +144,7 @@ const authSlice = createSlice({
         // if(!action?.payload?.user) return
         
         localStorage.setItem("data", JSON.stringify(action?.payload?.user));
-        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("isLoggedIn", true);  // Store boolean value directly
         localStorage.setItem("role", action?.payload?.user?.role);
         state.isLoggedIn = true
         state.data = action?.payload?.user

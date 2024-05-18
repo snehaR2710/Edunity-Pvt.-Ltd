@@ -8,11 +8,11 @@ import { getUserData } from "../../Redux/Slices/AuthSlice";
 export default function Profile() {
   const dispatch = useDispatch();
 
-  const userData = useSelector((state) => state?.auth?.data);
-  console.log("userdata", userData);
+  const userData = useSelector((state) => console.log("state", state));
+  // console.log("userdata", userData);
 
   useEffect(() => {
-    // dispatch(getUserData())
+    dispatch(getUserData())
   }, [])
 // 
   return (
