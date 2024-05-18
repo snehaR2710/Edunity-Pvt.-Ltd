@@ -17,20 +17,17 @@ export default function Checkout() {
   const navigate = useNavigate();
 
   const razorpayKey = useSelector((state) => state?.razorpay?.key);
-  console.log("key", razorpayKey);
+
   const subscription_id = useSelector(
     (state) =>  state?.razorpay?.subscription_id
   );
 
-  console.log("subscription_id", subscription_id);
-
   const userdata = useSelector((state) => state?.auth?.data);
 
-  const isPaymentVerified = useSelector(
-    (state) => state?.razorpay?.isPaymentVerified);
+  // const {isPaymentVerified} = useSelector((state) => state?.razorpay);
 
 
-    // for storing the payment details after successfull transaction
+  // for storing the payment details after successfull transaction
   const paymentDetails = {
     razorpay_payment_id: "",
     razorpay_subscription_id: "",
@@ -52,38 +49,35 @@ export default function Checkout() {
       key: razorpayKey,
       subscription: subscription_id,
       name: "Edunity Pvt. Ltd.",
-      discription: "Subscription",
-      theme: {
-        color: "#528FF0",
-      },
-      prefill: {
-        email: userdata.email,
-        name: userdata.fullName,
-      },
-
+      discription: "Monthly Subscription",
       // this function run after successfull payment
       handler: async function (response) {
         console.log("response", response);
         paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
-        paymentDetails.razorpay_subscription_id =
-          response.razorpay_subscription_id;
+        paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
         paymentDetails.razorpay_signature = response.razorpay_signature;
 
         toast.success("Payment successfully");
 
         // verifying the payment
         const res = await dispatch(verifyUserPayment(paymentDetails));
-        console.log("res", res);
+        console.log("res:-", res);
 
         // redirecting the user according to the verification status
         (res?.payload?.success)
           ? navigate("/checkout/success")
           : navigate("/checkout/fail");
       },
+      prefill: {
+        email: userdata.email,
+        name: userdata.fullName,
+      },
+      theme: {
+        color: "#528FF0",
+      },
     };
 
     const paymentObject = new window.Razorpay(options);
-
     paymentObject.open();
   }
 

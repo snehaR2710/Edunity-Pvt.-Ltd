@@ -7,7 +7,7 @@ export default function Profile() {
   const dispatch = useDispatch();
 
   const userData = useSelector((state) => state?.auth?.data);
-  // console.log(userData);
+  console.log(userData);
 
   return (
     <HomeLayout>
@@ -54,7 +54,7 @@ export default function Profile() {
             </Link>
           </div>
 
-          {userData?.subscription?.status === "active" && (
+          {userData?.subscription?.status === 'active' && (
             <button className="bg-red-600 hover:bg-red-500 transition-all ease-in-out duration-300 py-2 rounded-sm text-base font-semibold text-center hover:scale-105">Cancel subscription</button>
           )}
 

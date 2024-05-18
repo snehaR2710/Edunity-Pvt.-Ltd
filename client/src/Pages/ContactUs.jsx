@@ -25,7 +25,7 @@ export function ContactUs() {
     event.preventDefault();
 
     if (!userInput.name || !userInput.email || !userInput.message) {
-      toast.error("All fields are mendatory");
+      toast.error("Please write your query!!");
       return;
     }
 

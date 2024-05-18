@@ -50,17 +50,16 @@ export const verifyUserPayment = createAsyncThunk("/Payment/verify", async (paym
         razorpay_payment_id: paymentDetails.razorpay_payment_id,
         razorpay_subscription_id: paymentDetails.razorpay_subscription_id,
         razorpay_signature: paymentDetails.razorpay_signature
-
       });
-      toast.promise(response, {
-        loading: "Verifing....",
-        success: (data) => {
-          return data?.data?.message;
-        },
-        error: "Failed to varify!!"
-      });
-      console.log(response);
-      return (await response).data;
+      // toast.promise(response, {
+      //   loading: "Verifing....",
+      //   success: (data) => {
+      //     return data?.data?.message;
+      //   },
+      //   error: "Failed to varify!!"
+      // });
+      console.log(response?.data);
+      return response?.data;
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
