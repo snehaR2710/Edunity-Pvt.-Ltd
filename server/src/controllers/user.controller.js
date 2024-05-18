@@ -38,7 +38,6 @@ const userRegister = async (req, res, next) => {
       public_id: email,
       secure_url: "",
     },
-    subscription: {},
   });
   
   if (!user) {
