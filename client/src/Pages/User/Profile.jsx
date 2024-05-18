@@ -1,13 +1,25 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import HomeLayout from "../../Layouts/HomeLayout";
+import { getUserData } from "../../Redux/Slices/AuthSlice";
 
 export default function Profile() {
   const dispatch = useDispatch();
 
   const userData = useSelector((state) => state?.auth?.data);
   console.log(userData);
+
+  // function to handle the cancel subscription of course
+  const handleCourseCancelSubscription = async () => {
+    // await dispatch(cancelCourseBundle());
+    await dispatch(getUserData());
+  };
+
+  useEffect(() => {
+    dispatch(getUserData())
+  }, [])
 
   return (
     <HomeLayout>
@@ -54,10 +66,11 @@ export default function Profile() {
             </Link>
           </div>
 
-          {userData?.subscription?.status === 'active' && (
-            <button className="bg-red-600 hover:bg-red-500 transition-all ease-in-out duration-300 py-2 rounded-sm text-base font-semibold text-center hover:scale-105">Cancel subscription</button>
+          {userData?.subscription?.status === "active" && (
+            <button className="bg-red-600 hover:bg-red-500 transition-all ease-in-out duration-300 py-2 rounded-sm text-base font-semibold text-center hover:scale-105">
+              Cancel subscription
+            </button>
           )}
-
         </div>
       </div>
     </HomeLayout>
