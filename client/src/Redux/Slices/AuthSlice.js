@@ -98,14 +98,8 @@ export const updateProfile = createAsyncThunk("/user/update/profile", async (dat
 export const getUserData = createAsyncThunk("/user/details", async () => {
   try {
     const res = axiosInstance.get(`/api/v1/users/getuser`);
-    toast.promise(res, {
-      loading: "wait! getting profile in progress...",
-      success: (data) => {
-        return data?.data?.message;
-      },
-      error: "Faild to logout ",
-    });
-    return (await res).data;
+    console.log("get user", res);
+    return res.data;
   } catch (error) {
     toast.error(error.message);
   }
