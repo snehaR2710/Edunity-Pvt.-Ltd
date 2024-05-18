@@ -39,13 +39,13 @@ const buySubscription = async (req, res, next) => {
     }
 
     console.log("before subscription", user.subscription);
-      // Creating a subscription using razorpay that we imported from the server
-      const subscription = await razorpay.subscriptions.create({
-        plan_id: process.env.RAZORPAY_PLAN_ID,
-        customer_notify: 1,
-        total_count: 12
-      });
-      console.log("Subscription Created:", subscription)
+    // Creating a subscription using razorpay that we imported from the server
+    const subscription = await razorpay.subscriptions.create({
+      plan_id: process.env.RAZORPAY_PLAN_ID,
+      customer_notify: 1,
+      total_count: 5,
+    });
+    console.log("Subscription Created:", subscription);
 
     // Adding the ID and the status to the user account
     user.subscription.id = subscription.id;
@@ -84,13 +84,13 @@ const verifySubscription = async (req, res, next) => {
       razorpay_subscription_id,
     } = req.body;
 
-    if (
-      !razorpay_payment_id ||
-      !razorpay_signature ||
-      !razorpay_subscription_id
-    ) {
-      return next(new ApiError(400, "All fields are required"));
-    }
+    // if (
+    //   !razorpay_payment_id ||
+    //   !razorpay_signature ||
+    //   !razorpay_subscription_id
+    // ) {
+    //   return next(new ApiError(400, "All fields are required"));
+    // }
 
     const user = await User.findById(id);
 
@@ -108,7 +108,7 @@ const verifySubscription = async (req, res, next) => {
     // razorpay_payment_id is from the frontend and there should be a '|' character between this and subscriptionId
     // At the end convert it to Hex value
     const generatedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_SECRET)
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_payment_id} | ${subscriptionId}`)
       .digest("hex");
 
@@ -119,18 +119,17 @@ const verifySubscription = async (req, res, next) => {
       return next(new ApiError(400, "Payment not verified, Please try again"));
     }
 
-    console.log("generatedSignature", generatedSignature);
-
     // If they match create payment and store it in the DB
     const signature = await Payment.create({
       razorpay_payment_id,
       razorpay_signature,
       razorpay_subscription_id,
     });
+    
     console.log("signature", signature);
 
     // Update the user subscription status to active (This will be created before this)
-    user.subscription.status = "active";
+    user.subscription.status = 'active';
     console.log("active", user.subscription.status);
 
     await user.save();
@@ -140,6 +139,7 @@ const verifySubscription = async (req, res, next) => {
       message: "Payment verified successfully",
     });
   } catch (error) {
+    console.log("verification Failed", error);
     return next(new ApiError(500, error.message));
   }
 };

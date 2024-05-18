@@ -18,6 +18,10 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
   })
 );
+// app.use(cors({
+//   origin: process.env.FRONTEND_URL,
+//   credentials: true
+// }))
 
 // get data through "form"
 app.use(express.json({ limit: "20kb" }));
