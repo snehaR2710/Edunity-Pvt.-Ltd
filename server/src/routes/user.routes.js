@@ -8,7 +8,7 @@ const router = Router();
 router.route('/register').post( upload.single("avatar") ,userRegister );
 router.route('/login').post( userLogin );
 router.route('/logout').post( userLogout );
-router.route('/getuser').get( getProfile );
+router.route('/getuser').get(isLoggedIn, getProfile );
 router.route('/reset').post(forgotPassword);
 router.route('/reset/:resetToken').post(resetPassword);
 router.route('/change-password').post(isLoggedIn, changePassword);
