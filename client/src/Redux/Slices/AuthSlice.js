@@ -6,7 +6,7 @@ import axiosInstance from "../../Helpers/axiosInstance";
 // const initialUserData = localStorage.getItem("data");
 
 const initialState = {
-  isLoggedIn: localStorage.getItem('isLoggedIn') || false,
+  isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn')) || false,
   role: localStorage.getItem('role') || '',
   data: JSON.parse(localStorage.getItem('data')) || null,
   
@@ -120,7 +120,7 @@ const authSlice = createSlice({
         const user = action?.payload?.user;
 
         localStorage.setItem("data", JSON.stringify(user));
-        localStorage.setItem("isLoggedIn","true");
+        localStorage.setItem("isLoggedIn",JSON.stringify(true));
         localStorage.setItem("role", user?.role);
         state.isLoggedIn = true;
         state.data = user;
@@ -140,7 +140,7 @@ const authSlice = createSlice({
         const user = action?.payload?.user;
         console.log("in auth slice", user);        
         localStorage.setItem("data", JSON.stringify(user));
-        localStorage.setItem("isLoggedIn", "true"); 
+        localStorage.setItem("isLoggedIn", JSON.stringify(true)); 
         localStorage.setItem("role", user?.role);
         state.isLoggedIn = true
         state.data = user
@@ -149,10 +149,10 @@ const authSlice = createSlice({
 
       .addCase(updateProfile.fulfilled, (state, action) => {
         const user = action?.payload?.user
-        console.log("updateuser:", user);
-        localStorage.setItem("data", JSON.stringify(user));
-        localStorage.setItem("isLoggedIn", "true"); 
-        localStorage.setItem("role", user?.role);
+        console.log("updateuser:", user)
+        localStorage.setItem("data", JSON.stringify(user))
+        localStorage.setItem("isLoggedIn", JSON.stringify(true)) 
+        localStorage.setItem("role", user?.role)
         state.isLoggedIn = true
         state.data = user
         state.role = user?.role

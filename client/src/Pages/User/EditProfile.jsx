@@ -9,17 +9,30 @@ import HomeLayout from "../../Layouts/HomeLayout";
 import { getUserData, updateProfile } from "../../Redux/Slices/AuthSlice";
 
 export default function EditProfile() {
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const userId = useSelector((state) => state?.auth?.data?._id)
 
   const [previewImage, setImagePreview] = useState("");
 
   const [data, setData] = useState({
     fullName: "",
     avatar: undefined,
-    userId: useSelector((state) => state?.auth?.data?._id),
+    userId,
   });
+
+  useEffect(() => {
+    dispatch(getUserData()).then((res) => {
+      console.log("user in edit profile");
+      if(res.payload) {
+        const {fullName} = res.payload.user;
+        setData((preData) => ({...preData, fullName}))
+      }
+    })
+  }, [])
 
   function handleImageUpload(e) {
     e.preventDefault();
@@ -55,29 +68,16 @@ export default function EditProfile() {
     formData.append("fullName", data.fullName);
     formData.append("avatar", data.avatar);
 
-    // Log FormData contents
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
-
     const newUserdata = [data.userId, formData];
 
     // dispatching the api call using the thunk
     const res = await dispatch(updateProfile(newUserdata));
     console.log("res", res);
 
-    // fetching the data to update
-    // const newUser = await dispatch(getUserData());
-    // console.log("newUser", newUser);
-
     //if (response?.payload?.success) navigate("/");
     if (res?.payload?.success === true) navigate("/user/profile");
   }
 
-  useEffect(() => {
-    const newUser = dispatch(getUserData())
-    console.log("newUser", newUser);
-  }, [])
 
   return (
     <HomeLayout>
