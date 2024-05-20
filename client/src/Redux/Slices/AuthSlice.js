@@ -145,7 +145,18 @@ const authSlice = createSlice({
         state.isLoggedIn = true
         state.data = user
         state.role = user?.role
-      });
+      })
+
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        const user = action?.payload?.user
+        console.log("updateuser:", user);
+        localStorage.setItem("data", JSON.stringify(user));
+        localStorage.setItem("isLoggedIn", "true"); 
+        localStorage.setItem("role", user?.role);
+        state.isLoggedIn = true
+        state.data = user
+        state.role = user?.role
+      })
          
       
   },

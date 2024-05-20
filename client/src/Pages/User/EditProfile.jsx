@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
 // import toast from "react-hot-toast";
@@ -67,12 +67,17 @@ export default function EditProfile() {
     console.log("res", res);
 
     // fetching the data to update
-    const newUser = await dispatch(getUserData());
-    console.log("newUser", newUser);
+    // const newUser = await dispatch(getUserData());
+    // console.log("newUser", newUser);
 
     //if (response?.payload?.success) navigate("/");
     if (res?.payload?.success === true) navigate("/user/profile");
   }
+
+  useEffect(() => {
+    const newUser = dispatch(getUserData())
+    console.log("newUser", newUser);
+  }, [])
 
   return (
     <HomeLayout>

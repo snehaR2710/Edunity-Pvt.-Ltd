@@ -19,7 +19,7 @@ export const getRazorpayId = createAsyncThunk("/razorpayId/get", async () => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    toast.error(error?.response?.data?.message);
+    toast.error("failed to load data ");
   }
 });
 

@@ -82,10 +82,8 @@ export default function Checkout() {
   }
 
    useEffect(() => {
-    (async () => {
-      await dispatch(getRazorpayId());
-      await dispatch(purchaseCourseBundle());
-    }) ();  
+     dispatch(getRazorpayId());
+     dispatch(purchaseCourseBundle()); 
   }, []);
 
   return (
