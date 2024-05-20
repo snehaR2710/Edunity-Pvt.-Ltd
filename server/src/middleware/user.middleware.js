@@ -6,7 +6,7 @@ import { ApiError } from "../utils/error.js";
 export const isLoggedIn = async (req, _res, next) => {
     try {
         const {token} = req.cookies;
-        // console.log("token", token);
+        console.log("token isLoggedIn", token);
 
         if (!token) {
             return next (new ApiError(400, "Unauthorized request"));

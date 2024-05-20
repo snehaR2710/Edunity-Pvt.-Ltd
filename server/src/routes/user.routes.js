@@ -15,5 +15,4 @@ router.route('/change-password').post(isLoggedIn, changePassword);
 router.route('/update/:id').put(isLoggedIn, upload.single("avatar"), updateProfile)
 
 
-
 export default router;
