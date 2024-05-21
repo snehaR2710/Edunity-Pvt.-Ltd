@@ -341,6 +341,9 @@ const updateProfile = async (req, res, next) => {
 
   await user.save();
   // const updatedUser = await User.findById(id)
+
+  const token = await user.generateJWTToken();
+  res.cookie("token", token, cookieOptions);
   
 
   res.status(201).json({
