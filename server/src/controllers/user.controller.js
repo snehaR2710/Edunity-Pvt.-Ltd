@@ -294,6 +294,7 @@ const changePassword = async (req, res, next) => {
 };
 
 const updateProfile = async (req, res, next) => {
+
   const { fullName } = req.body;
 
   const { id } = req.user;
@@ -304,7 +305,7 @@ const updateProfile = async (req, res, next) => {
     return next(new ApiError(400, "User does not exist!"));
   }
 
-  // req.user means given by user in body and upadte this user's fullName in user object
+  //req.user means given by user in body and upadte this user's fullName in user object
   if (fullName) {
     user.fullName = fullName;
   }
@@ -315,20 +316,20 @@ const updateProfile = async (req, res, next) => {
 
     try {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "lms", // Save files in a folder named lms
+        folder: "lms", //Save files in a folder named lms
         width: 250,
         height: 250,
-        gravity: "faces", // This option tells cloudinary to center the image around detected faces (if any) after cropping or resizing the original image
+        gravity: "faces", //This option tells cloudinary to center the image around detected faces (if any) after cropping or resizing the original image
         crop: "fill",
       });
 
-      //    if success
+      //if success
       if (result) {
-        // Set the public_id and secure_url in DB
+        //Set the public_id and secure_url in DB
         user.avatar.public_id = result.public_id;
         user.avatar.secure_url = result.secure_url;
 
-        // After successful upload remove the file from local storage
+        //After successful upload remove the file from local storage
         fs.unlinkSync(`./uploads/${req.file.filename}`);
       }
     } catch (err) {
@@ -339,13 +340,13 @@ const updateProfile = async (req, res, next) => {
   }
 
   await user.save();
-  const updatedUser = await User.findById(id)
+  // const updatedUser = await User.findById(id)
   
 
   res.status(201).json({
     success: true,
     message: "User details updated successfully!!",
-    updatedUser,
+    user,
   });
 };
 

@@ -9,23 +9,23 @@ export const isLoggedIn = async (req, _res, next) => {
         console.log("token isLoggedIn", token);
 
         if (!token) {
-            return next (new ApiError(400, "Unauthorized request"));
+            return next (new ApiError(401, "Unauthorized request"));
         }
 
-        // token is available
+        // token is availablen
         const decodedtoken = jwt.verify(token, process.env.JWT_SECRET);
         // console.log("decodedtoken", decodedtoken);
 
         // const user = await User.findById(decodedtoken?._id);
 
         if (!decodedtoken) {
-            return next (new ApiError(400, "Invalid access Token"));
+            return next (new ApiError(401, "Invalid access Token"));
         }
         
         req.user = decodedtoken;
         next();
     } catch (error) {
-        return next (new ApiError(400,error?.message || "Invalid access Token"));
+        return next (new ApiError(401,error?.message || "Invalid access Token"));
 
     }
 }
