@@ -70,6 +70,9 @@ export default function EditProfile() {
 
     const newUserdata = [data.userId, formData];
 
+    const token = document.cookie
+    console.log(token);
+
     // dispatching the api call using the thunk
     const res = await dispatch(updateProfile(newUserdata));
     console.log("res", res);
