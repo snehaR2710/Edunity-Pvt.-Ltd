@@ -18,6 +18,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
   })
 );
+
 // app.use(cors({
 //   origin: process.env.FRONTEND_URL,
 //   credentials: true
