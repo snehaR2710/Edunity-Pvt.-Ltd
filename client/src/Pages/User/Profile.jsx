@@ -11,6 +11,10 @@ export default function Profile() {
   const userData = useSelector((state) => state?.auth?.data);
   console.log("userdata", userData);
 
+  const updatedUser = useSelector((state) => state?.auth?.data);
+  console.log("updatedUser", updatedUser);
+
+
   useEffect(() => {
     dispatch(getUserData())
   }, [])
@@ -20,19 +24,19 @@ export default function Profile() {
       <div className="min-h-[90vh] flex items-center justify-center">
         <div className="my-10 flex flex-col gap-4 rounded-lg p-4 text-white w-96 shadow-[0_0_10px_black]">
           <img
-            src={userData?.avatar.secure_url}
+            src={userData?.avatar?.secure_url || updatedUser?.payload?.user?.avatar?.secure_url}
             alt="Avatar"
             className="w-40 m-auto rounded-full border border-black"
           />
           <h3 className="text-2xl font-semibold text-center capitalize text-yellow-500 tracking-wider">
-            {userData?.fullName}
+            {userData?.fullName || updatedUser?.payload?.user?.fullName}
           </h3>
           <div className=" flex flex-col gap-1">
             <p className="text-yellow-500">
-              Email: <span className="text-white">{userData?.email}</span>
+              Email: <span className="text-white">{userData?.email || updatedUser?.payload?.user?.email}</span>
             </p>
             <p className="text-yellow-500">
-              Role: <span className="text-white">{userData?.role}</span>
+              Role: <span className="text-white">{userData?.role || updatedUser?.payload?.user?.role}</span>
             </p>
             <p className="text-yellow-500">
               Subscription:{" "}

@@ -148,14 +148,13 @@ const authSlice = createSlice({
       })
 
       .addCase(updateProfile.fulfilled, (state, action) => {
-        const user = action?.payload?.user
+        const user = action
         console.log("updateuser:", user)
         localStorage.setItem("data", JSON.stringify(user))
         localStorage.setItem("isLoggedIn", JSON.stringify(true)) 
         localStorage.setItem("role", user?.role)
         state.isLoggedIn = true
         state.data = user
-        state.role = user?.role
       })
          
       

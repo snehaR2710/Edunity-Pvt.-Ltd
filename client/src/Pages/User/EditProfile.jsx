@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
 // import toast from "react-hot-toast";
@@ -23,16 +23,6 @@ export default function EditProfile() {
     avatar: undefined,
     userId,
   });
-
-  useEffect(() => {
-    dispatch(getUserData()).then((res) => {
-      console.log("user in edit profile");
-      if(res.payload) {
-        const {fullName} = res.payload.user;
-        setData((preData) => ({...preData, fullName}))
-      }
-    })
-  }, [])
 
   function handleImageUpload(e) {
     e.preventDefault();
@@ -74,9 +64,14 @@ export default function EditProfile() {
     const res = await dispatch(updateProfile(newUserdata));
     console.log("res", res);
 
+    dispatch(getUserData())
+     
+
     //if (response?.payload?.success) navigate("/");
     if (res?.payload?.success === true) navigate("/user/profile");
   }
+
+  
 
 
   return (
