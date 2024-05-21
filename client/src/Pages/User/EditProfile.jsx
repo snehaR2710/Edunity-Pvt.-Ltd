@@ -14,6 +14,8 @@ export default function EditProfile() {
 
   const navigate = useNavigate();
 
+  const isLoggedIn = useSelector((state) => console.log(state))
+
   const userId = useSelector((state) => state?.auth?.data?._id)
 
   const [previewImage, setImagePreview] = useState("");
