@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
 // import toast from "react-hot-toast";
@@ -13,8 +13,10 @@ export default function EditProfile() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  // state.auth.isLoggedIn === true
 
-  const isLoggedIn = useSelector((state) => console.log(state))
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn === true)
+  console.log("isLoggedIn", isLoggedIn);
 
   const userId = useSelector((state) => state?.auth?.data?._id)
 
@@ -25,6 +27,12 @@ export default function EditProfile() {
     avatar: undefined,
     userId,
   });
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login")
+    }
+  }, [isLoggedIn, navigate])
 
   function handleImageUpload(e) {
     e.preventDefault();
