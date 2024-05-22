@@ -108,6 +108,71 @@ export const getUserData = createAsyncThunk("/user/details", async ({rejectWithV
   }
 });
 
+
+// function to change user password
+export const changePassword = createAsyncThunk("auth/changePassword", async (userPassword) => {
+  try {
+
+    let res = axiosInstance.post(`/api/v1/users/change-password`, userPassword)
+
+    await toast.promise(res, {
+      loading: "Loading...",
+      success: (data) => {
+        return data?.data?.message;
+      },
+      error: "Failed to change password"  
+    })
+    return (await res).data
+    
+  } catch (error) {
+    toast.error(error?.res?.data?.message);
+  }
+})
+
+// function to handle forget 
+export const forgotPassword = createAsyncThunk("auth/forgetPassword", async (email) => {
+  console.log(email);
+  try {
+
+    let res = axiosInstance.post(`/api/v1/users/forgotpassword`, {email})
+
+    toast.promise(res, {
+      loading: "Loading...",
+      success: (data) => {
+        return data?.data?.message;
+      },
+      error: "Failed to send verification email",
+    });
+    console.log(res.data);
+    return (await res).data
+    
+  } catch (error) {
+    toast.error(error?.res?.data?.message)
+  }
+});
+
+// function to reset the password
+export const resetPassword = createAsyncThunk("auth/reset/Password", async (data) => {
+  console.log(data);
+  try {
+
+    let res = axiosInstance.post(`/api/v1/users/reset/:${data.resetToken}`, {password: data.password})
+
+    toast.promise(res, {
+      loading: "Resetting...",
+      success: (data) => {
+        return data?.data?.message;
+      },
+      error: "Failed to reset password",
+    });
+    console.log(res.data);
+    return (await res).data
+    
+  } catch (error) {
+    toast.error(error?.res?.data?.message)
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -156,7 +221,6 @@ const authSlice = createSlice({
         state.isLoggedIn = true
         state.data = user
       })
-         
       
   },
 });

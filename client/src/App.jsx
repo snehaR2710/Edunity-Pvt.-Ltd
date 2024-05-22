@@ -8,6 +8,7 @@ import { ContactUs } from "./Pages/ContactUs";
 import { CourseDescription } from "./Pages/Courses/CourseDescription";
 import { CourseLists } from "./Pages/Courses/CourseList";
 import CreateCourse from "./Pages/Courses/CreateCourse";
+import { DisplayLectures } from "./Pages/Dashboard/DisplayLectures";
 import { Denied } from "./Pages/Denied";
 import { HomePage } from "./Pages/HomePage";
 import { Login } from "./Pages/Login";
@@ -16,7 +17,9 @@ import Chechout from "./Pages/Payment/Chechout";
 import { CheckoutFail } from "./Pages/Payment/CheckoutFail";
 import { CheckoutSuccess } from "./Pages/Payment/CheckoutSuccess";
 import { Signup } from "./Pages/Signup";
+import { ChangePassword } from "./Pages/User/ChangePassword123";
 import EditProfile from "./Pages/User/EditProfile";
+import { ForgotPassword } from "./Pages/User/ForgotPassword";
 import Profile from "./Pages/User/Profile";
 
 function App() {
@@ -50,6 +53,13 @@ function App() {
           <Route path="/checkout" element={<Chechout />}></Route>
           <Route path="/checkout/success" element={<CheckoutSuccess />}></Route>
           <Route path="/checkout/fail" element={<CheckoutFail />}></Route>
+          <Route
+            path="/course/displaylecture"
+            element={<DisplayLectures />}
+          ></Route>
+          <Route path="/change-password" element={<ChangePassword />}></Route>
+
+          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         </Route>
 
         <Route path="/denied" element={<Denied />}></Route>
