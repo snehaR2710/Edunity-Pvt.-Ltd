@@ -7,9 +7,9 @@ import sendEmail from "../utils/sendemail.js";
 
 
 const cookieOptions = {
+  secure: process.env.NODE_ENV === 'production' ? true : false,
   maxAge: 7 * 24 * 60 * 60 * 1000, //7 days6
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production' ? true : false,
 };
 
 const userRegister = async (req, res, next) => {
@@ -129,7 +129,7 @@ const userLogin = async (req, res, next) => {
 
 const userLogout = (_req, res, _next) => {
   res.cookie("token", null, {
-    secure: true,
+    secure: process.env.NODE_ENV === 'production' ? true : false,
     maxAge: 0,
     httpOnly: true,
   });
@@ -141,7 +141,7 @@ const userLogout = (_req, res, _next) => {
 };
 
 const getProfile = async (req, res, next) => {
-  console.log("req.user" , req.user);
+  // console.log("req.user" , req.user);
   try {
     const userId = req.user.id;
     const user = await User.findById(userId);
@@ -193,15 +193,31 @@ const forgotPassword = async (req, res, next) => {
   // store resetToken in database
   await user.save();
 
+  // constructing a url to send the correct data
+  /**HERE
+   * req.protocol will send if http or https
+   * req.get('host') will get the hostname
+   * the rest is the route that we will create to verify if token is correct or not
+   */
+  // const resetPasswordUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/v1/user/reset/${resetToken}`;
+
   // genrate url and sent token to user
-  const resetPasswordURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  const resetPasswordURL = `${process.env.FRONTEND_URL}/reset/${resetToken}`;
   console.log("resetPasswordURL", resetPasswordURL);
 
   const subject = "Reset Password";
   const message = `You can reset your password by clicking <a href=${resetPasswordURL} target="_blank">Reset your password</a>\nIf the above link does not work for some reason then copy paste this link in new tab ${resetPasswordURL}.\n If you have not requested this, kindly ignore.`;
 
+  console.log("Sending email to:", email);
+
   try {
-    await sendEmail(email, subject, message);
+    await sendEmail({
+      to: email,
+      subject,
+      html: message
+    });
 
     // If email sent successfully send the success response
     res.status(200).json({
@@ -215,9 +231,16 @@ const forgotPassword = async (req, res, next) => {
 
     await user.save();
 
-    return next(new ApiError(err.message, 400));
+    return next(new ApiError(500, err.message));
   }
 };
+
+
+/**
+ * @RESET_PASSWORD
+ * @ROUTE @POST {{URL}}/api/v1/user/reset/:resetToken
+ * @ACCESS Public
+ */
 
 const resetPassword = async (req, res, next) => {
   const { resetToken } = req.params;
@@ -228,26 +251,33 @@ const resetPassword = async (req, res, next) => {
     return next(new ApiError(400, "New Password for Change is required"));
   }
 
+  // We are again hashing the resetToken using sha256 since we have stored our resetToken in DB using the same algorithm
   const forgotPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
+    console.log("forgotPasswordToken", forgotPasswordToken);
+
     // reset token that we save in database when we create that token, check if exists or not
   const user = await User.findOne({
-    forgotPasswordToken,
-    forgotPasswordExpiry: { $gt: Date.now() },
+    forgotPasswordToken: forgotPasswordToken,
+    forgotPasswordExpiry: { $gt: Date.now() },  // $gt will help us check for greater than value, with this we can check if token is valid or expired
   });
 
   console.log("user:-", user);
 
+  // If not found or expired send the response
   if (!user) {
     return next(
       new ApiError(400, "Token is invalid or expired, Please try again")
     );
   }
 
+   // Update the password if token is valid and not expired
   user.password = password;
+
+  // making forgotPassword* valus undefined in the DB
   user.forgotPasswordToken = undefined;
   user.forgotPasswordExpiry = undefined;
 

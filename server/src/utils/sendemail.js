@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 
 // async..await is not allowed in global scope, must use a wrapper
 
-const sendEmail = async function (email, subject, message) {
+const sendEmail = async function ({ to, subject, html }) {
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
@@ -28,10 +28,13 @@ const sendEmail = async function (email, subject, message) {
     // send mail with defined transport object 
     const info = await transporter.sendMail({
         from: process.env.SMTP_FROM_EMAIL, // sender address
-        to: email, // user email
+        to: to,      //email, // user email
         subject: subject, // Subject line
-        html: message, // html body
+        html: html,   //message, // html body
     });
+
+    console.log("Message sent: %s", info.messageId);
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     console.log("info", info);
 }
 
