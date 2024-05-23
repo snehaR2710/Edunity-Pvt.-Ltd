@@ -8,18 +8,20 @@ import { ContactUs } from "./Pages/ContactUs";
 import { CourseDescription } from "./Pages/Courses/CourseDescription";
 import { CourseLists } from "./Pages/Courses/CourseList";
 import CreateCourse from "./Pages/Courses/CreateCourse";
+import { AdminDashboard } from "./Pages/Dashboard/AdminDashboard";
 import { DisplayLectures } from "./Pages/Dashboard/DisplayLectures";
 import { Denied } from "./Pages/Denied";
 import { HomePage } from "./Pages/HomePage";
 import { Login } from "./Pages/Login";
 import { NotFoundPage } from "./Pages/NotFoundpage";
+import { ChangePassword } from "./Pages/Password/ChangePassword";
+import { ForgotPassword } from "./Pages/Password/ForgotPassword";
+import { ResetPassword } from "./Pages/Password/ResetPassword";
 import Chechout from "./Pages/Payment/Chechout";
 import { CheckoutFail } from "./Pages/Payment/CheckoutFail";
 import { CheckoutSuccess } from "./Pages/Payment/CheckoutSuccess";
 import { Signup } from "./Pages/Signup";
-import { ChangePassword } from "./Pages/User/ChangePassword123";
 import EditProfile from "./Pages/User/EditProfile";
-import { ForgotPassword } from "./Pages/User/ForgotPassword";
 import Profile from "./Pages/User/Profile";
 
 function App() {
@@ -44,7 +46,8 @@ function App() {
         ></Route>
 
         <Route element={<RequireAuth allowedRoles={"ADMIN"} />}>
-          <Route path="/course/create" element={<CreateCourse />}></Route>
+          <Route path="/course/create" element={<CreateCourse />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["ADMIN", "USER"]} />}>
@@ -58,8 +61,8 @@ function App() {
             element={<DisplayLectures />}
           ></Route>
           <Route path="/change-password" element={<ChangePassword />}></Route>
-
           <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="/reset/:resetToken" element={<ResetPassword />}></Route>
         </Route>
 
         <Route path="/denied" element={<Denied />}></Route>

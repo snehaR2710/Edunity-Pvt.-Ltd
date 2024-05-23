@@ -155,8 +155,9 @@ export const forgotPassword = createAsyncThunk("auth/forgetPassword", async (ema
 export const resetPassword = createAsyncThunk("auth/reset/Password", async (data) => {
   console.log(data);
   try {
+    const {resetToken, password} = data
 
-    let res = axiosInstance.post(`/api/v1/users/reset/:${data.resetToken}`, {password: data.password})
+    let res = axiosInstance.post(`/api/v1/users/reset/${resetToken}`, {password: password})
 
     toast.promise(res, {
       loading: "Resetting...",
@@ -172,6 +173,25 @@ export const resetPassword = createAsyncThunk("auth/reset/Password", async (data
     toast.error(error?.res?.data?.message)
   }
 });
+
+// export const resetPassword = createAsyncThunk("auth/resetPassword", async (data, thunkAPI) => {
+//   try {
+//     const { resetToken, password } = data; // Destructure resetToken and password from data
+
+//     // You can access additional Redux Toolkit features via thunkAPI
+//     const axiosInstance = thunkAPI.extra.axiosInstance; // Assuming you pass axiosInstance as an extra argument when creating the store
+
+//     const res = await axiosInstance.post(`/api/v1/users/reset/${resetToken}`, {
+//       password: password,
+//     });
+
+//     toast.success(res.data.message);
+//     return res.data;
+//   } catch (error) {
+//     toast.error(error?.response?.data?.message);
+//     throw error.response.data; // Rethrow the error to let Redux Toolkit handle the rejection
+//   }
+// });
 
 const authSlice = createSlice({
   name: "auth",
