@@ -7,8 +7,8 @@ import sendEmail from "../utils/sendemail.js";
 
 
 const cookieOptions = {
-  secure: process.env.NODE_ENV === 'production' ? true : false,
-  maxAge: 7 * 24 * 60 * 60 * 1000, //7 days6
+  secure: true,
+  maxAge: 10 * 24 * 60 * 60 * 1000, //7 days6
   httpOnly: true,
   sameSite: true,
 };
