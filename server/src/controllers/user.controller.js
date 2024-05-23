@@ -10,6 +10,7 @@ const cookieOptions = {
   secure: process.env.NODE_ENV === 'production' ? true : false,
   maxAge: 7 * 24 * 60 * 60 * 1000, //7 days6
   httpOnly: true,
+  sameSite: 'None',
 };
 
 const userRegister = async (req, res, next) => {
@@ -132,6 +133,7 @@ const userLogout = (_req, res, _next) => {
     secure: process.env.NODE_ENV === 'production' ? true : false,
     maxAge: 0,
     httpOnly: true,
+    sameSite: 'None',
   });
 
   res.status(200).json({
