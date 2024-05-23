@@ -130,10 +130,11 @@ const userLogin = async (req, res, next) => {
 
 const userLogout = (_req, res, _next) => {
   res.cookie("token", null, {
-    secure: process.env.NODE_ENV === 'production' ? true : false,
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
     httpOnly: true,
     sameSite: 'None',
+    domain: 'vercel.app'
   });
 
   res.status(200).json({
