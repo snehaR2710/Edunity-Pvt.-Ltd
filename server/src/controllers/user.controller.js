@@ -10,7 +10,7 @@ const cookieOptions = {
   secure: process.env.NODE_ENV === 'production' ? true : false,
   maxAge: 7 * 24 * 60 * 60 * 1000, //7 days6
   httpOnly: true,
-  sameSite: 'None',
+  sameSite: true,
 };
 
 const userRegister = async (req, res, next) => {
@@ -133,8 +133,8 @@ const userLogout = (_req, res, _next) => {
     secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
     httpOnly: true,
-    sameSite: 'None',
-    domain: 'vercel.app'
+    sameSite: true,
+    // domain: 'vercel.app'
   });
 
   res.status(200).json({
