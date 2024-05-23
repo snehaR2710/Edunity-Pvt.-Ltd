@@ -7,10 +7,11 @@ import sendEmail from "../utils/sendemail.js";
 
 
 const cookieOptions = {
-  secure: true,
+  secure: process.env.NODE_ENV === 'production',
   maxAge: 10 * 24 * 60 * 60 * 1000, //7 days6
   httpOnly: true,
-  sameSite: true,
+  sameSite: 'None',
+  domain: process.env.COOKIES_DOMAIN
 };
 
 const userRegister = async (req, res, next) => {
@@ -133,8 +134,8 @@ const userLogout = (_req, res, _next) => {
     secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
     httpOnly: true,
-    sameSite: true,
-    // domain: 'vercel.app'
+    sameSite: 'None',  // Ensure the cookie is sent in cross-site requests
+    domain: process.env.COOKIES_DOMAIN  // Set the domain to the backend's domain
   });
 
   res.status(200).json({
@@ -373,6 +374,7 @@ const updateProfile = async (req, res, next) => {
   }
 
   await user.save();
+
   // const updatedUser = await User.findById(id)
 
   const token = await user.generateJWTToken();
