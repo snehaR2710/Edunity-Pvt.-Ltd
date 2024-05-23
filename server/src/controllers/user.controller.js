@@ -231,7 +231,7 @@ const forgotPassword = async (req, res, next) => {
 
     await user.save();
 
-    return next(new ApiError(500, err.message));
+    return next(new ApiError(400, err.message));
   }
 };
 
