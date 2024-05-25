@@ -15,7 +15,13 @@ app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 app.use(cors({
     origin: process.env.FRONTEND_URL3,
     credentials: true,
+    exposedHeaders: 'Set-Cookie',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: [
+      'Access-Control-Allow-Origin',
+      'Content-Type',
+      'Authorization'
+    ]
   })
 );
 

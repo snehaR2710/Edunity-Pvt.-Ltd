@@ -150,6 +150,9 @@ const getProfile = async (req, res, next) => {
     const userId = req.user.id;
     const user = await User.findById(userId);
 
+    const token = await user.generateJWTToken();
+    res.cookie('token', token, cookieOptions);
+
     res.status(200).json({
       success: true,
       message: "User fetched successfully",
@@ -245,7 +248,6 @@ const forgotPassword = async (req, res, next) => {
  * @ROUTE @POST {{URL}}/api/v1/user/reset/:resetToken
  * @ACCESS Public
  */
-
 const resetPassword = async (req, res, next) => {
   const { resetToken } = req.params;
 
@@ -388,6 +390,62 @@ const updateProfile = async (req, res, next) => {
   });
 };
 
+const adminData = async (req, res, next) => {
+
+  const users = await User.find({})
+
+  res.status(201).json({
+    success: true,
+    message: "All Users",
+    users,
+  });
+
+
+}
+
+const updateUserRole = async (req, res, next) => {
+
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ApiError(400, "User does not exist!"));
+  }
+
+  if (user.role === "USER") user.role = "ADMIN"
+  else user.role = "USER"
+
+  await user.save();
+
+
+  res.status(201).json({
+    success: true,
+    message: "Role updated",
+  });
+
+}
+
+const deleteUser = async (req, res, next) => {
+
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ApiError(400, "User does not exist!"));
+  }
+
+  await cloudinary.uploader.destroy(user.avatar.public_id);
+
+
+  await user.deleteUser();
+
+  // cancel subscription
+
+  res.status(201).json({
+    success: true,
+    message: "User Deleted",
+  });
+
+}
+
 
 export {
   userRegister,
@@ -398,4 +456,7 @@ export {
   resetPassword,
   changePassword,
   updateProfile,
+  adminData,
+  updateUserRole,
+  deleteUser
 };

@@ -35,7 +35,7 @@ export const isLoggedIn = async (req, _res, next) => {
 export const authorizedRoles = (...roles) => async (req, _res, next) => {
 
     const currentUserRoles = req.user.role;
-    // console.log("currentUserRoles", currentUserRoles);
+    console.log("currentUserRoles", currentUserRoles);
 
     if (!roles.includes(currentUserRoles)) {
         return next (new ApiError(400, "You do not have permission to access this route"))
