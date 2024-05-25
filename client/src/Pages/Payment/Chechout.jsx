@@ -47,9 +47,9 @@ export default function Checkout() {
 
     const options = {
       key: razorpayKey,
-      subscription: subscription_id,
       name: "Edunity Pvt. Ltd.",
-      discription: "Monthly Subscription",
+      discription: "Get access to all premium courses",
+      subscription: subscription_id,
       // this function run after successfull payment
       handler: async function (response) {
         console.log("response", response);

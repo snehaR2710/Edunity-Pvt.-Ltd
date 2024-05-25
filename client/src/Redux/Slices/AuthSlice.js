@@ -77,6 +77,9 @@ export const updateProfile = createAsyncThunk("/user/update/profile", async (dat
 
     const res = axiosInstance.put(`/api/v1/users/update/:${userId}`, formData, {
       withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${document.cookie.split('=')[1]}` // Ensure token is extracted correctly
+      }
     });
     toast.promise(res, {
       loading: "Updating...",
