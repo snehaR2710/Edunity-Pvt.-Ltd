@@ -11,7 +11,7 @@ const cookieOptions = {
   maxAge: 10 * 24 * 60 * 60 * 1000, //7 days6
   httpOnly: true,
   sameSite: 'None',
-  domain: process.env.COOKIES_DOMAIN
+  domain: process.env.FRONTEND_URL3
 };
 
 const userRegister = async (req, res, next) => {
