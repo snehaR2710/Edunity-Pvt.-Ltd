@@ -5,7 +5,9 @@ import { ApiError } from "../utils/error.js";
 
 export const isLoggedIn = async (req, _res, next) => {
     try {
-        const token = req.cookies?.token || req.header('Authorization')?.replace('Bearer ', '');
+        console.log('Cookies:', req.cookies);
+
+        const token = req.cookies?.token     //|| req.header('Authorization')?.replace('Bearer ', '');
         console.log("token isLoggedIn", token);
 
         if (!token) {
@@ -24,6 +26,7 @@ export const isLoggedIn = async (req, _res, next) => {
         
         req.user = decodedtoken;
         next();
+
     } catch (error) {
         return next (new ApiError(401,error?.message || "Invalid access Token"));
 
