@@ -172,25 +172,6 @@ export const resetPassword = createAsyncThunk("auth/reset/Password", async (data
   }
 });
 
-// export const resetPassword = createAsyncThunk("auth/resetPassword", async (data, thunkAPI) => {
-//   try {
-//     const { resetToken, password } = data; // Destructure resetToken and password from data
-
-//     // You can access additional Redux Toolkit features via thunkAPI
-//     const axiosInstance = thunkAPI.extra.axiosInstance; // Assuming you pass axiosInstance as an extra argument when creating the store
-
-//     const res = await axiosInstance.post(`/api/v1/users/reset/${resetToken}`, {
-//       password: password,
-//     });
-
-//     toast.success(res.data.message);
-//     return res.data;
-//   } catch (error) {
-//     toast.error(error?.response?.data?.message);
-//     throw error.response.data; // Rethrow the error to let Redux Toolkit handle the rejection
-//   }
-// });
-
 const authSlice = createSlice({
   name: "auth",
   initialState,
