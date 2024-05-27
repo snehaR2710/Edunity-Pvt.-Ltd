@@ -12,6 +12,7 @@ const initialState = {
   
 };
 
+// token 
 
 // signup
 export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
@@ -36,6 +37,7 @@ export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
 export const login = createAsyncThunk("/auth/login", async (data) => {
   try {
     const response = axiosInstance.post(`/api/v1/users/login`, data);
+    console.log("login", response);
     toast.promise(response, {
       loading: "wait! Authentication in progress...",
       success: (data) => {
@@ -182,7 +184,6 @@ const authSlice = createSlice({
       // for user login
       .addCase(login.fulfilled, (state, action) => {
         const user = action?.payload?.user;
-
         localStorage.setItem("data", JSON.stringify(user));
         localStorage.setItem("isLoggedIn",JSON.stringify(true));
         localStorage.setItem("role", user?.role);
