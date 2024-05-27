@@ -10,6 +10,7 @@ const cookieOptions = {
   secure: process.env.NODE_ENV === 'production',
   maxAge: 10 * 24 * 60 * 60 * 1000, //10 days
   httpOnly: true,
+  sameSite: 'strict',
   // sameSite: 'Lax',
   // domain: process.env.COOKIES_DOMAIN
 };
@@ -116,14 +117,14 @@ const userLogin = async (req, res, next) => {
   user.password = undefined;
 
   res.cookie('token', token, cookieOptions);
-  console.log("token:", token);
+  // console.log("token:", token);
 
   const loggedInUser = await User.findOne({ email });
 
   res.status(200).json({
     success: true,
     message: "User logged in successfully",
-    token: token,
+    // token: token,
     user: loggedInUser
   })
 
