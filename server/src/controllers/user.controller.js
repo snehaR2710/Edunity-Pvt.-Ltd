@@ -8,10 +8,10 @@ import sendEmail from "../utils/sendemail.js";
 
 const cookieOptions = {
   secure: process.env.NODE_ENV === 'production',
-  maxAge: 10 * 24 * 60 * 60 * 1000, //7 days6
+  maxAge: 10 * 24 * 60 * 60 * 1000, //10 days
   httpOnly: true,
-  sameSite: 'Lax',
-  domain: process.env.COOKIES_DOMAIN
+  // sameSite: 'Lax',
+  // domain: process.env.COOKIES_DOMAIN
 };
 
 const userRegister = async (req, res, next) => {
@@ -123,6 +123,7 @@ const userLogin = async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User logged in successfully",
+    token: token,
     user: loggedInUser
   })
 
@@ -134,8 +135,6 @@ const userLogout = (_req, res, _next) => {
     secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
     httpOnly: true,
-    sameSite: 'None',  // Ensure the cookie is sent in cross-site requests
-    domain: process.env.COOKIES_DOMAIN  // Set the domain to the backend's domain
   });
 
   res.status(200).json({
