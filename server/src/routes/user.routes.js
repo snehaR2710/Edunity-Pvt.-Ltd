@@ -12,7 +12,7 @@ router.route('/getuser').get(isLoggedIn, getProfile );
 router.route('/forgotpassword').post(forgotPassword);
 router.route('/reset/:resetToken').post(resetPassword);
 router.route('/change-password').post(isLoggedIn, changePassword);
-router.route('/update/:id').put(upload.single("avatar"), updateProfile)
+router.route('/update/:id').put(isLoggedIn, upload.single("avatar"), updateProfile)
 
 router.route('/admin').get(isLoggedIn, authorizedRoles('ADMIN'), adminData );
 router
