@@ -10,8 +10,7 @@ const cookieOptions = {
   secure: process.env.NODE_ENV === 'production',
   maxAge: 10 * 24 * 60 * 60 * 1000, //10 days
   httpOnly: true,
-  sameSite: 'strict',
-  // sameSite: 'Lax',
+  sameSite: 'None', 
   // domain: process.env.COOKIES_DOMAIN
 };
 
