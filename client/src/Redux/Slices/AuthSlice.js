@@ -9,6 +9,7 @@ const initialState = {
   isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn')) || false,
   role: localStorage.getItem('role') || '',
   data: JSON.parse(localStorage.getItem('data')) || null,
+  // token: localStorage.getItem('token') || null,
   
 };
 
@@ -78,7 +79,7 @@ export const updateProfile = createAsyncThunk("/user/update/profile", async (dat
     console.log("edit data", userId, " ", formData);
 
     const res = axiosInstance.put(`/api/v1/users/update/:${userId}`, formData, {
-      // withCredentials: true,
+      // headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     toast.promise(res, {
       loading: "Updating...",
@@ -99,7 +100,9 @@ export const updateProfile = createAsyncThunk("/user/update/profile", async (dat
 // get user datails
 export const getUserData = createAsyncThunk("/user/details", async ({rejectWithValue}) => {
   try {
-    const res = axiosInstance.get(`/api/v1/users/getuser`);
+    const res = axiosInstance.get(`/api/v1/users/getuser`, {
+      // headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
     console.log("get user", res.data);
     return res.data;
   } catch (error) {
@@ -113,7 +116,9 @@ export const getUserData = createAsyncThunk("/user/details", async ({rejectWithV
 export const changePassword = createAsyncThunk("auth/changePassword", async (userPassword) => {
   try {
 
-    let res = axiosInstance.post(`/api/v1/users/change-password`, userPassword)
+    let res = axiosInstance.post(`/api/v1/users/change-password`, userPassword, {
+      // headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
 
     await toast.promise(res, {
       loading: "Loading...",
@@ -184,9 +189,11 @@ const authSlice = createSlice({
       // for user login
       .addCase(login.fulfilled, (state, action) => {
         const user = action?.payload?.user;
+        // const token = action?.payload?.token;
         localStorage.setItem("data", JSON.stringify(user));
         localStorage.setItem("isLoggedIn",JSON.stringify(true));
         localStorage.setItem("role", user?.role);
+        // localStorage.setItem("token", token);
         state.isLoggedIn = true;
         state.data = user;
         state.role = user?.role;
@@ -198,6 +205,7 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.data = null;
         state.role = '';
+        // state.token = null;
       })
 
       // for user details
