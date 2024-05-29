@@ -332,7 +332,7 @@ const updateProfile = async (req, res, next) => {
 
   const { fullName } = req.body;
 
-  const { id } = req.user;
+  const { id } = req.params;
 
   const user = await User.findById(id);
 
