@@ -12,17 +12,19 @@ app.use(helmet());
 app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 
 
-app.use(cors({
-    origin: [process.env.FRONTEND_URL],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
-  })
-);
-
 // app.use(cors({
-//   origin: http://localhost:5174,
-//   credentials: true
-// }))
+//     origin: [process.env.FRONTEND_URL],
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+//   })
+// );
+
+// http://localhost:5174,
+console.log(process.env.FRONTEND_URL2);
+app.use(cors({
+  origin: process.env.FRONTEND_URL2,
+  credentials: true
+}))
 
 // get data through "form"
 app.use(express.json({ limit: "20kb" }));
