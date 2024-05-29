@@ -5,10 +5,10 @@ import { app } from "./app.js";
 import { connectToDb } from "./dbConnection/db.js";
 
 
-dotenv.config({
-  path: "./env",
-});
-
+// dotenv.config({
+//   path: "./env",
+// });
+dotenv.config();
 
 const PORT = process.env.PORT || 6001;
 
