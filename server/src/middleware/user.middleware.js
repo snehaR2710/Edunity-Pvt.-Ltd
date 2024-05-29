@@ -5,7 +5,8 @@ import { ApiError } from "../utils/error.js";
 
 export const isLoggedIn = async (req, _res, next) => {
     try {
-        console.log('Cookies:', req.cookies);
+        console.log('Cookies:', req.headers);
+        // console.log(req.headers)
 
         const token = req?.cookies?.token     //|| req.header('Authorization')?.replace('Bearer ', '');
         console.log("token isLoggedIn", token);

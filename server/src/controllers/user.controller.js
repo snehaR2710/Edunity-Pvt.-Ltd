@@ -8,11 +8,15 @@ import sendEmail from "../utils/sendemail.js";
 
 const cookieOptions = {
   secure: process.env.NODE_ENV === 'production' ? true : false,
+  expires: new Date(Date.now() + 100 * 30),
   maxAge: 10 * 24 * 60 * 60 * 1000, //10 days
   httpOnly: true,
+  path: '/*',
   sameSite: 'None', 
-  // domain: process.env.COOKIES_DOMAIN
+  domain: 'http://localhost:5173',
 };
+  // domain: process.env.COOKIES_DOMAIN http://localhost:5173/user/edit-profile
+
 
 const userRegister = async (req, res, next) => {
   const { fullName, email, password } = req.body;
@@ -116,6 +120,7 @@ const userLogin = async (req, res, next) => {
   user.password = undefined;
 
   res.cookie('token', token, cookieOptions);
+  res.setHeader('Authorization', `Bearer ${token}`);
   // console.log("token:", token);
 
   const loggedInUser = await User.findOne({ email });
@@ -334,7 +339,7 @@ const updateProfile = async (req, res, next) => {
 
   const { fullName } = req.body;
 
-  const { id } = req.params;
+  const { id } = req.user;
 
   const user = await User.findById(id);
 
