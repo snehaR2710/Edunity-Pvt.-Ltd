@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import cloudinary from "cloudinary";
 import Razorpay from "razorpay";
-import { app } from "./src/app.js";
-import { connectToDb } from "./src/dbConnection/db.js";
+import { app } from "./app.js";
+import { connectToDb } from "./dbConnection/db.js";
 
 // dotenv.config({
 //   path: "./env",
