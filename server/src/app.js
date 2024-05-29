@@ -22,7 +22,7 @@ app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 // http://localhost:5174,
 console.log(process.env.FRONTEND_URL2);
 app.use(cors({
-  origin: process.env.FRONTEND_URL2,
+  origin: 'http://localhost:5173',
   credentials: true
 }))
 

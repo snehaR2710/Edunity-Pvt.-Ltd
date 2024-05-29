@@ -11,9 +11,7 @@ const cookieOptions = {
   expires: new Date(Date.now() + 100 * 30),
   maxAge: 10 * 24 * 60 * 60 * 1000, //10 days
   httpOnly: true,
-  path: '/*',
   sameSite: 'None', 
-  domain: 'http://localhost:5173',
 };
   // domain: process.env.COOKIES_DOMAIN http://localhost:5173/user/edit-profile
 
