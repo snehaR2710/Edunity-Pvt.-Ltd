@@ -5,7 +5,7 @@ import { ApiError } from "../utils/error.js";
 
 export const isLoggedIn = async (req, _res, next) => {
     try {
-        console.log('Cookies:', req.cookies);
+        console.log('Cookies:', req);
 
         const token = req.cookies?.token     //|| req.header('Authorization')?.replace('Bearer ', '');
         console.log("token isLoggedIn", token);
@@ -16,9 +16,7 @@ export const isLoggedIn = async (req, _res, next) => {
 
         // token is availablen
         const decodedtoken = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log("decodedtoken", decodedtoken);
-
-        // const user = await User.findById(decodedtoken?._id);
+        console.log("decodedtoken", decodedtoken);
 
         if (!decodedtoken) {
             return next (new ApiError(401, "Invalid access Token"));

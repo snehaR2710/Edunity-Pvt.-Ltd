@@ -13,14 +13,14 @@ app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }));
 
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL3],
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
   })
 );
 
 // app.use(cors({
-//   origin: process.env.FRONTEND_URL,
+//   origin: http://localhost:5174,
 //   credentials: true
 // }))
 
