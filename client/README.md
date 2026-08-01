@@ -23,8 +23,6 @@ Add the following details in the plugin property of tailwind config
   
 ```
 
-
-
 ### Adding Plugings and dependencies
 
 ```
