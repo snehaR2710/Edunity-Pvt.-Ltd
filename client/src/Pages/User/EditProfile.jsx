@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
-// import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,102 +8,177 @@ import HomeLayout from "../../Layouts/HomeLayout";
 import { getUserData, updateProfile } from "../../Redux/Slices/AuthSlice";
 
 export default function EditProfile() {
-
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-  // state.auth.isLoggedIn === true
 
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn === true)
-  console.log("isLoggedIn", isLoggedIn);
+  const isLoggedIn = useSelector(
+    (state) => state?.auth?.isLoggedIn === true
+  );
 
-  const userId = useSelector((state) => state?.auth?.data?._id)
+  const userId = useSelector((state) => state?.auth?.data?._id);
+
+  const currentUser = useSelector((state) => state?.auth?.data);
 
   const [previewImage, setImagePreview] = useState("");
 
   const [data, setData] = useState({
     fullName: "",
     avatar: undefined,
-    userId,
+    userId: userId,
   });
 
+  // Check authentication
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate("/login")
+      navigate("/login");
     }
-  }, [isLoggedIn, navigate])
+  }, [isLoggedIn, navigate]);
 
+  // Load existing user name
+  useEffect(() => {
+    if (currentUser) {
+      setData((prev) => ({
+        ...prev,
+        fullName: currentUser?.fullName || "",
+        userId: currentUser?._id || userId,
+      }));
+    }
+  }, [currentUser, userId]);
+
+  // Handle image upload
   function handleImageUpload(e) {
-    e.preventDefault();
+    const uploadedImage = e.target.files?.[0];
 
-    const uploadedImage = e.target.files[0];
+    if (!uploadedImage) return;
 
-    // if image exists then getting the url link of it
-    if (uploadedImage) {
-      setData({
-        ...data,
-        avatar: uploadedImage,
-      });
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(uploadedImage);
-      fileReader.addEventListener("load", function () {
-        setImagePreview(this.result);
-      });
-    }
+    setData((prev) => ({
+      ...prev,
+      avatar: uploadedImage,
+    }));
+
+    const fileReader = new FileReader();
+
+    fileReader.onload = () => {
+      setImagePreview(fileReader.result);
+    };
+
+    fileReader.readAsDataURL(uploadedImage);
   }
 
-  // function to set the name of user
-  const setName = (event) => {
+  // Handle name change
+  const handleNameChange = (event) => {
     const { name, value } = event.target;
-    const newUserdata = { ...data, [name]: value };
-    setData(newUserdata);
+
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
+  // Submit form
   async function onFormSubmit(e) {
     e.preventDefault();
 
-    // creating the form data from the existing data
     const formData = new FormData();
+
     formData.append("fullName", data.fullName);
-    formData.append("avatar", data.avatar);
 
-    const newUserdata = [data.userId, formData];
+    if (data.avatar) {
+      formData.append("avatar", data.avatar);
+    }
 
-    const token = document.cookie
-    console.log(token);
+    const newUserData = [data.userId, formData];
 
-    // dispatching the api call using the thunk
-    const res = await dispatch(updateProfile(newUserdata));
-    console.log("res", res);
+    const res = await dispatch(updateProfile(newUserData));
 
-    dispatch(getUserData())
-     
+    console.log("Update profile response:", res);
 
-    //if (response?.payload?.success) navigate("/");
-    if (res?.payload?.success === true) navigate("/user/profile");
+    // Refresh user data
+    await dispatch(getUserData());
+
+    if (res?.payload?.success === true) {
+      navigate("/user/profile");
+    }
   }
-
-  
-
 
   return (
     <HomeLayout>
-      <div className="h-[90vh] flex items-center justify-center">
+      <main
+        className="
+          min-h-[calc(100vh-120px)]
+          flex
+          items-center
+          justify-center
+          px-4
+          py-10
+          sm:px-6
+        "
+      >
         <form
           onSubmit={onFormSubmit}
-          className="flex flex-col justify-center gap-5 shadow-[0_0_10px_black] rounded-lg p-4 text-white w-80 min-h-[26rem]"
+          className="
+            flex
+            w-full
+            max-w-sm
+            flex-col
+            justify-center
+            gap-5
+            rounded-lg
+            p-5
+            text-white
+            shadow-[0_0_10px_black]
+            sm:p-6
+          "
         >
-          <h1 className="text-center text-2xl font-semibold">Edit Profile</h1>
+          {/* Heading */}
+          <h1 className="text-center text-2xl font-semibold sm:text-3xl">
+            Edit Profile
+          </h1>
 
-          {/* avatar input */}
-          <label htmlFor="image_uploads" className="cursor-pointer">
+          {/* Avatar */}
+          <label
+            htmlFor="image_uploads"
+            className="mx-auto cursor-pointer"
+          >
             {previewImage ? (
               <img
                 src={previewImage}
-                className="w-28 h-28 rounded-full m-auto"
+                alt="Profile preview"
+                className="
+                  h-24
+                  w-24
+                  rounded-full
+                  object-cover
+                  border-2
+                  border-yellow-500
+                  sm:h-28
+                  sm:w-28
+                "
+              />
+            ) : currentUser?.avatar?.secure_url ? (
+              <img
+                src={currentUser.avatar.secure_url}
+                alt="Current profile"
+                className="
+                  h-24
+                  w-24
+                  rounded-full
+                  object-cover
+                  border-2
+                  border-yellow-500
+                  sm:h-28
+                  sm:w-28
+                "
               />
             ) : (
-              <BsPersonCircle className="w-28 h-28 rounded-full m-auto" />
+              <BsPersonCircle
+                className="
+                  h-24
+                  w-24
+                  sm:h-28
+                  sm:w-28
+                "
+              />
             )}
           </label>
 
@@ -112,39 +186,88 @@ export default function EditProfile() {
             type="file"
             id="image_uploads"
             name="image_uploads"
-            accept=".jpg, .png, .jpeg, .svg"
+            accept=".jpg,.jpeg,.png,.svg"
             className="hidden"
             onChange={handleImageUpload}
           />
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="fullName">Full Name</label>
+          {/* Full Name */}
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="fullName"
+              className="text-base font-semibold sm:text-lg"
+            >
+              Full Name
+            </label>
+
             <input
               required
               type="text"
               name="fullName"
               id="fullName"
               value={data.fullName}
-              className="bg-transparent border rounded-sm py-1 px-2"
+              className="
+                w-full
+                rounded-sm
+                border
+                border-gray-500
+                bg-transparent
+                px-3
+                py-2
+                text-sm
+                outline-none
+                transition
+                focus:border-yellow-500
+                sm:text-base
+              "
               placeholder="Enter your name"
-              onChange={setName}
+              onChange={handleNameChange}
             />
           </div>
 
+          {/* Update Button */}
           <button
             type="submit"
-            className="bg-yellow-600 hover:bg-yellow-500 hover:scale-105 transition-all ease-in-out duration-300 rounded-sm font-semibold py-2 cursor-pointer text-center"
+            className="
+              w-full
+              cursor-pointer
+              rounded-sm
+              bg-yellow-600
+              py-2
+              text-base
+              font-semibold
+              transition-all
+              duration-300
+              hover:bg-yellow-500
+              sm:text-lg
+            "
           >
-            Update profile
+            Update Profile
           </button>
 
-          <Link to="/user/profile">
-            <p className="link text-accent flex items-center justify-center gap-2 text-lg font-semibold cursor-pointer w-full">
-              <AiOutlineArrowLeft /> Go back to profile
-            </p>
+          {/* Back */}
+          <Link
+            to="/user/profile"
+            className="
+              flex
+              w-full
+              items-center
+              justify-center
+              gap-2
+              text-center
+              text-sm
+              font-semibold
+              text-accent
+              underline-offset-2
+              hover:underline
+              sm:text-base
+            "
+          >
+            <AiOutlineArrowLeft />
+            Go back to profile
           </Link>
         </form>
-      </div>
+      </main>
     </HomeLayout>
   );
 }

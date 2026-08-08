@@ -6,36 +6,172 @@ import HomeLayout from "../Layouts/HomeLayout";
 export function HomePage() {
   return (
     <HomeLayout>
-      <div className="pt-10 text-white flex flex-col md:flex-row items-center justify-center gap-10 px-6 md:mx-16 min-h-[90vh] md:h-[90vh]">
-        <div className="w-full md:w-1/2 space-y-6 text-center md:text-left">
-          <h1 className="text-3xl sm:text-4xl font-semibold">
-            Find out best
-            <span className="text-yellow-500 font-bold"> Online Courses</span>
+      <section
+        className="
+          flex
+          min-h-[calc(100vh-80px)]
+          w-full
+          flex-col
+          items-center
+          justify-center
+          gap-10
+          px-5
+          pb-10
+          pt-16
+          text-white
+          sm:px-8
+          md:flex-row
+          md:gap-12
+          md:px-12
+          lg:px-20
+          lg:pt-10
+        "
+      >
+
+        {/* ================= LEFT CONTENT ================= */}
+
+        <div
+          className="
+            flex
+            w-full
+            flex-col
+            items-center
+            space-y-5
+            text-center
+            md:w-1/2
+            md:items-start
+            md:text-left
+            lg:space-y-6
+          "
+        >
+          <h1
+            className="
+              max-w-xl
+              text-3xl
+              font-semibold
+              leading-tight
+              sm:text-4xl
+              lg:text-5xl
+            "
+          >
+            Find out best{" "}
+            <span className="font-bold text-yellow-500">
+              Online Courses
+            </span>
           </h1>
-          <p className="text-lg sm:text-xl text-gray-200">
-            We have a large library of courses taught by highly skilled and
-            qualified faculties at a very affordable cost.
+
+          <p
+            className="
+              max-w-xl
+              text-base
+              leading-relaxed
+              text-gray-200
+              sm:text-lg
+              lg:text-xl
+            "
+          >
+            We have a large library of courses taught by
+            highly skilled and qualified faculties at a very
+            affordable cost.
           </p>
 
-          <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-6">
-            <Link to={"/courses"}>
-              <button className="bg-yellow-500 px-5 py-3 rounded-md font-semibold text-lg cursor-pointer hover:bg-yellow-600 transition-all ease-in-out duration-300">
+          <div
+            className="
+              flex
+              w-full
+              flex-col
+              items-center
+              justify-center
+              gap-3
+              sm:w-auto
+              sm:flex-row
+              sm:gap-5
+              md:justify-start
+            "
+          >
+            <Link
+              to="/courses"
+              className="
+                w-full
+                sm:w-auto
+              "
+            >
+              <button
+                className="
+                  w-full
+                  rounded-md
+                  bg-yellow-500
+                  px-6
+                  py-3
+                  text-base
+                  font-semibold
+                  text-black
+                  transition-all
+                  duration-300
+                  hover:bg-yellow-600
+                  sm:text-lg
+                "
+              >
                 Explore Courses
               </button>
             </Link>
 
-            <Link to={"/contact"}>
-              <button className="border border-yellow-500  px-5 py-3 rounded-md font-semibold text-lg cursor-pointer hover:bg-yellow-600 transition-all ease-in-out duration-300">
+            <Link
+              to="/contact"
+              className="
+                w-full
+                sm:w-auto
+              "
+            >
+              <button
+                className="
+                  w-full
+                  rounded-md
+                  border
+                  border-yellow-500
+                  px-6
+                  py-3
+                  text-base
+                  font-semibold
+                  transition-all
+                  duration-300
+                  hover:bg-yellow-600
+                  sm:text-lg
+                "
+              >
                 Contact Us
               </button>
             </Link>
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 flex items-center justify-center">
-          <img src={HomePageImage} alt="homepage image" className="max-w-full h-auto" />
+        {/* ================= RIGHT IMAGE ================= */}
+
+        <div
+          className="
+            flex
+            w-full
+            items-center
+            justify-center
+            md:w-1/2
+          "
+        >
+          <img
+            src={HomePageImage}
+            alt="Online learning"
+            className="
+              h-auto
+              w-[75%]
+              max-w-[450px]
+              object-contain
+              sm:w-[65%]
+              md:w-full
+              lg:max-w-[520px]
+            "
+          />
         </div>
-      </div>
+
+      </section>
     </HomeLayout>
   );
 }

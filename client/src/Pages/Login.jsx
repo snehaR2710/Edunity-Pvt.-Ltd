@@ -10,7 +10,6 @@ export function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -18,36 +17,29 @@ export function Login() {
 
   const handleUserInput = (e) => {
     const { name, value } = e.target;
-    setLoginData({
-      ...loginData,
+
+    setLoginData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   async function onLogin(event) {
     event.preventDefault();
-    if (
-      !loginData.email ||
-      !loginData.password
-    ) {
+
+    if (!loginData.email || !loginData.password) {
       toast.error("Please fill all the details");
       return;
     }
 
-    // const formData = new FormData();
-    // formData.append("email", loginData.email);
-    // formData.append("password", loginData.password);
-    
-    // subtitute of making FormData() we can directly pass loginData or signupData
-
-    // calling create account action
     const response = await dispatch(login(loginData));
+
     console.log("response", response);
 
-    // redirect to login page if true
-    if (response?.payload?.success) navigate("/");
+    if (response?.payload?.success) {
+      navigate("/");
+    }
 
-    // clearing the signup inputs
     setLoginData({
       email: "",
       password: "",
@@ -56,56 +48,146 @@ export function Login() {
 
   return (
     <HomeLayout>
-      <div className="flex items-center justify-center h-[90vh]">
+      <div
+        className="
+          flex
+          min-h-[calc(100vh-120px)]
+          w-full
+          items-center
+          justify-center
+          px-4
+          py-10
+          sm:px-6
+        "
+      >
         <form
           noValidate
           onSubmit={onLogin}
-          className="flex flex-col justify-center gap-3 rounded-lg p-4 text-white w-96 shadow-[0_0_10px_black]"
+          className="
+            flex
+            w-full
+            max-w-sm
+            flex-col
+            justify-center
+            gap-4
+            rounded-lg
+            p-5
+            text-white
+            shadow-[0_0_10px_black]
+            sm:p-6
+          "
         >
-          <h1 className="text-center text-2xl font-bold">Login Page</h1>
+          {/* Heading */}
+          <h1 className="text-center text-2xl font-bold sm:text-3xl">
+            Login Page
+          </h1>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="font-semibold ">
+          {/* Email */}
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="email"
+              className="text-base font-semibold sm:text-lg"
+            >
               Email
             </label>
+
             <input
               type="email"
               required
               name="email"
               id="email"
               placeholder="your@gmail.com"
-              className="bg-transparent px-2 py-1 border"
+              className="
+                w-full
+                rounded-sm
+                border
+                border-gray-500
+                bg-transparent
+                px-3
+                py-2
+                text-sm
+                outline-none
+                transition
+                focus:border-yellow-500
+                sm:text-base
+              "
               onChange={handleUserInput}
               value={loginData.email}
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="font-semibold ">
+          {/* Password */}
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="password"
+              className="text-base font-semibold sm:text-lg"
+            >
               Password
             </label>
+
             <input
               type="password"
               required
               name="password"
               id="password"
               placeholder="Your Password"
-              className="bg-transparent px-2 py-1 border"
+              className="
+                w-full
+                rounded-sm
+                border
+                border-gray-500
+                bg-transparent
+                px-3
+                py-2
+                text-sm
+                outline-none
+                transition
+                focus:border-yellow-500
+                sm:text-base
+              "
               onChange={handleUserInput}
               value={loginData.password}
             />
           </div>
 
+          {/* Forgot Password */}
+          <div className="flex justify-end">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-yellow-500 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
+          {/* Login Button */}
           <button
             type="submit"
-            className="mt-2 bg-yellow-600 hover:bg-yellow-500 transition-all ease-in-out duration-300 rounded-sm py-2 font-semibold text-lg cursor-pointer"
+            className="
+              mt-1
+              w-full
+              cursor-pointer
+              rounded-sm
+              bg-yellow-600
+              py-2
+              text-base
+              font-semibold
+              transition-all
+              duration-300
+              hover:bg-yellow-500
+              sm:text-lg
+            "
           >
             Login
           </button>
 
-          <p className="text-center">
-            Already heve an account ?{" "}
-            <Link to={"/signup"} className="link text-accent cursor-pointer">
+          {/* Signup */}
+          <p className="text-center text-sm sm:text-base">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="cursor-pointer text-yellow-500 hover:underline"
+            >
               Signup
             </Link>
           </p>

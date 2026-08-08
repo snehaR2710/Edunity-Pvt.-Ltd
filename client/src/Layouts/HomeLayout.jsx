@@ -13,99 +13,293 @@ export default function HomeLayout({ children }) {
   const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
   const role = useSelector((state) => state?.auth?.role);
 
-  // function to hide the drawer on close button click
-  function hidedrawer() {
-    const element = document.getElementsByClassName("drawer-toggle");
-    element[0].checked = false;
+  // Close drawer
+  function hideDrawer() {
+    const drawer = document.getElementById("my-drawer");
+
+    if (drawer) {
+      drawer.checked = false;
+    }
   }
 
+  // Logout
   const handleLogOut = async (e) => {
     e.preventDefault();
+
     const result = await dispatch(logout());
-    console.log("logout", result);
+
     if (result?.payload?.success) {
+      hideDrawer();
       navigate("/");
     }
   };
 
   return (
-    <div className="min-h-[90vh]">
-      <div className="drawer absolute left-0 z-50 w-fit">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+    <div className="min-h-screen w-full overflow-x-hidden bg-base-300">
+      
+      {/*DRAWER*/}
+
+      <div className="drawer fixed left-0 top-0 z-50 w-fit">
+        <input
+          id="my-drawer"
+          type="checkbox"
+          className="drawer-toggle"
+        />
+
+        {/* MENU BUTTON */}
 
         <div className="drawer-content">
-          <label htmlFor="my-drawer" className="cursor-pointer relative">
-            <FiMenu size={"32px"} className="font-bold text-white m-4" />
+          <label
+            htmlFor="my-drawer"
+            className="inline-flex cursor-pointer items-center justify-center p-3"
+          >
+            <FiMenu
+              size={30}
+              className="text-white transition-all duration-300 hover:text-yellow-500"
+            />
           </label>
         </div>
 
+        {/* DRAWER SIDE */}
+
         <div className="drawer-side">
-          <label htmlFor="my-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-48 h-[100%] sm:w-80 bg-base-100 text-base-content relative">
-            <li className="w-fit absolute right-2 z-50">
-              <button onClick={hidedrawer}>
-                <AiFillCloseCircle size={24} />
+          {/* Background overlay */}
+          <label
+            htmlFor="my-drawer"
+            aria-label="close sidebar"
+            className="drawer-overlay"
+          ></label>
+
+          {/* SIDEBAR */}
+
+          <ul
+            className="
+              menu
+              relative
+              min-h-full
+              w-[75vw]
+              max-w-xs
+              bg-black/40
+              backdrop-blur-sm
+              border-r
+              border-white/10
+              p-4
+              pt-16
+              text-base-content
+              shadow-2xl
+              sm:w-80
+            "
+          >
+            {/* CLOSE BUTTON */}
+
+            <li className="absolute right-3 top-3 w-fit">
+              <button
+                onClick={hideDrawer}
+                className="
+                  btn
+                  btn-ghost
+                  btn-circle
+                  text-gray-300
+                  hover:bg-white/10
+                  hover:text-yellow-500
+                "
+              >
+                <AiFillCloseCircle size={25} />
               </button>
             </li>
 
-            <li className="hover:text-yellow-500">
-              <Link to="/">Home</Link>
+            {/* HOME */}
+
+            <li onClick={hideDrawer}>
+              <Link
+                to="/"
+                className="
+                  text-base
+                  font-medium
+                  text-gray-200
+                  transition-colors
+                  hover:bg-white/10
+                  hover:text-yellow-500
+                "
+              >
+                Home
+              </Link>
             </li>
+
+            {/* ADMIN LINKS */}
 
             {isLoggedIn && role === "ADMIN" && (
-              <li className="hover:text-yellow-500">
-                <Link to={"/admin/dashboard"}>Admin DashBoard</Link>
-              </li>
+              <>
+                <li onClick={hideDrawer}>
+                  <Link
+                    to="/admin/dashboard"
+                    className="
+                      text-base
+                      font-medium
+                      text-gray-200
+                      hover:bg-white/10
+                      hover:text-yellow-500
+                    "
+                  >
+                    Admin Dashboard
+                  </Link>
+                </li>
+
+                <li onClick={hideDrawer}>
+                  <Link
+                    to="/course/create"
+                    className="
+                      text-base
+                      font-medium
+                      text-gray-200
+                      hover:bg-white/10
+                      hover:text-yellow-500
+                    "
+                  >
+                    Create New Course
+                  </Link>
+                </li>
+              </>
             )}
 
-            {isLoggedIn && role === "ADMIN" && (
-              <li className="hover:text-yellow-500">
-                <Link to={"/course/create"}>Create new course</Link>
-              </li>
-            )}
+            {/* COMMON LINKS */}
 
-            <li className="hover:text-yellow-500">
-              <Link to="/courses">All Courses</Link>
+            <li onClick={hideDrawer}>
+              <Link
+                to="/courses"
+                className="
+                  text-base
+                  font-medium
+                  text-gray-200
+                  hover:bg-white/10
+                  hover:text-yellow-500
+                "
+              >
+                All Courses
+              </Link>
             </li>
 
-            <li className="hover:text-yellow-500">
-              <Link to="/contact">Contact Us</Link>
+            <li onClick={hideDrawer}>
+              <Link
+                to="/contact"
+                className="
+                  text-base
+                  font-medium
+                  text-gray-200
+                  hover:bg-white/10
+                  hover:text-yellow-500
+                "
+              >
+                Contact Us
+              </Link>
             </li>
 
-            <li className="hover:text-yellow-500">
-              <Link to="/about">About Us</Link>
+            <li onClick={hideDrawer}>
+              <Link
+                to="/about"
+                className="
+                  text-base
+                  font-medium
+                  text-gray-200
+                  hover:bg-white/10
+                  hover:text-yellow-500
+                "
+              >
+                About Us
+              </Link>
             </li>
 
-            {!isLoggedIn && (
-              <li className="absolute  bottom-0 w-[90%]">
-                <div className="w-full flex items-center justify-center gap-2">
-                  <button className="btn btn-primary px-9 py-1 font-semibold rounded-md w-fit hover:scale-105">
-                    <Link to={"/login"}>Login</Link>
-                  </button>
-                  <button className="btn btn-secondary px-9 py-1 font-semibold rounded-md w-fit hover:scale-105">
-                    <Link to={"/signup"}>Signup</Link>
+            {/* BOTTOM SECTION */}
+
+            <div
+              className="
+                absolute
+                bottom-5
+                left-4
+                right-4
+                flex
+                flex-col
+                gap-3
+              "
+            >
+              {/* LOGGED OUT */}
+
+              {!isLoggedIn && (
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <Link
+                    to="/login"
+                    onClick={hideDrawer}
+                    className="
+                      btn
+                      btn-primary
+                      w-full
+                      text-sm
+                      font-semibold
+                    "
+                  >
+                    Login
+                  </Link>
+
+                  <Link
+                    to="/signup"
+                    onClick={hideDrawer}
+                    className="
+                      btn
+                      btn-secondary
+                      w-full
+                      text-sm
+                      font-semibold
+                    "
+                  >
+                    Signup
+                  </Link>
+                </div>
+              )}
+
+              {/* LOGGED IN */}
+
+              {isLoggedIn && (
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <Link
+                    to="/user/profile"
+                    onClick={hideDrawer}
+                    className="
+                      btn
+                      btn-primary
+                      w-full
+                      text-sm
+                      font-semibold
+                    "
+                  >
+                    Profile
+                  </Link>
+
+                  <button
+                    onClick={handleLogOut}
+                    className="
+                      btn
+                      btn-secondary
+                      w-full
+                      text-sm
+                      font-semibold
+                    "
+                  >
+                    Logout
                   </button>
                 </div>
-              </li>
-            )}
-
-            {isLoggedIn && (
-              <li className="absolute  bottom-0 w-[90%]">
-                <div className="w-full flex items-center justify-center gap-2">
-                  <button className="btn btn-primary px-9 py-1 font-semibold rounded-md w-fit hover:scale-105">
-                    <Link to={"/user/profile"}>Profile</Link>
-                  </button>
-                  <button className="btn btn-secondary px-9 py-1 font-semibold rounded-md w-fit hover:scale-105">
-                    <Link onClick={handleLogOut}>Logout</Link>
-                  </button>
-                </div>
-              </li>
-            )}
+              )}
+            </div>
           </ul>
         </div>
       </div>
 
-      {children}
+      {/* PAGE CONTENT */}
+
+      <main className="min-h-[calc(100vh-80px)] w-full">
+        {children}
+      </main>
+
+      {/* FOOTER */}
 
       <Footer />
     </div>

@@ -9,56 +9,63 @@ import { cancelCourseBundle } from "../../Redux/Slices/RazopaySlice";
 
 export default function Profile() {
   const dispatch = useDispatch();
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const userData = useSelector((state) => state?.auth?.data);
-  console.log("userdata", userData);
 
-  const updatedUser = useSelector((state) => state?.auth?.data);
-  console.log("updatedUser", updatedUser);
-
-  async function hndleCancelSubscription() {
-    toast("Iniating cancelation....")
-    await dispatch(cancelCourseBundle());
-    await dispatch(getUserData());
-    toast.success("Canceled subscription!!");
-
-    navigate("/")
-  }
-
+  // Fetch latest user data when profile page loads
   useEffect(() => {
     dispatch(getUserData());
-  }, []);
-  //
+  }, [dispatch]);
+
+  // Cancel subscription
+  async function handleCancelSubscription() {
+    toast("Initiating cancellation...");
+
+    const response = await dispatch(cancelCourseBundle());
+
+    if (response?.payload?.success) {
+      await dispatch(getUserData());
+      toast.success("Subscription canceled successfully!");
+      navigate("/");
+    } else {
+      toast.error("Failed to cancel subscription");
+    }
+  }
+
   return (
     <HomeLayout>
-      <div className="min-h-[90vh] flex items-center justify-center">
-        <div className="my-10 flex flex-col gap-4 rounded-lg p-4 text-white w-96 shadow-[0_0_10px_black]">
+      <div className="min-h-[90vh] flex items-center justify-center px-4 py-10">
+        <div className="flex w-full max-w-md flex-col gap-4 rounded-lg p-5 text-white shadow-[0_0_10px_black]">
+          
+          {/* Avatar */}
           <img
-            src={
-              userData?.avatar?.secure_url ||
-              updatedUser?.payload?.user?.avatar?.secure_url
-            }
-            alt="Avatar"
-            className="w-40 m-auto rounded-full border border-black"
+            src={userData?.avatar?.secure_url}
+            alt="User Avatar"
+            className="mx-auto h-40 w-40 rounded-full border border-black object-cover"
           />
-          <h3 className="text-2xl font-semibold text-center capitalize text-yellow-500 tracking-wider">
-            {userData?.fullName || updatedUser?.payload?.user?.fullName}
+
+          {/* Name */}
+          <h3 className="text-center text-2xl font-semibold capitalize tracking-wider text-yellow-500">
+            {userData?.fullName}
           </h3>
-          <div className=" flex flex-col gap-1">
+
+          {/* User Information */}
+          <div className="flex flex-col gap-2">
             <p className="text-yellow-500">
               Email:{" "}
               <span className="text-white">
-                {userData?.email || updatedUser?.payload?.user?.email}
+                {userData?.email}
               </span>
             </p>
+
             <p className="text-yellow-500">
               Role:{" "}
               <span className="text-white">
-                {userData?.role || updatedUser?.payload?.user?.role}
+                {userData?.role}
               </span>
             </p>
+
             <p className="text-yellow-500">
               Subscription:{" "}
               <span className="text-white">
@@ -69,29 +76,41 @@ export default function Profile() {
             </p>
           </div>
 
+          {/* Profile Actions */}
           <div className="flex items-center justify-between gap-2">
-            {/* button to change the password */}
+            
+            {/* Change Password */}
             <Link
-              to={userData?.email === "test@gmail.com" ? "/denied" : "/change-password"}
-              className="w-1/2 bg-yellow-600 hover:bg-yellow-500 transition-all ease-in-out duration-300 rounded-sm font-semibold py-2 cursor-pointer text-center"
+              to={
+                userData?.email === "test@gmail.com"
+                  ? "/denied"
+                  : "/change-password"
+              }
+              className="w-1/2 rounded-sm bg-yellow-600 py-2 text-center font-semibold transition-all duration-300 hover:bg-yellow-500"
             >
-              <button>Change password</button>
+              Change Password
             </Link>
 
+            {/* Edit Profile */}
             <Link
-              to= {userData?.email === "test@gmail.com" ? "/denied" : "/user/edit-profile"}
-              className="w-1/2 bg-yellow-600 hover:bg-yellow-500 transition-all ease-in-out duration-300 rounded-sm font-semibold py-2 cursor-pointer text-center"
+              to={
+                userData?.email === "test@gmail.com"
+                  ? "/denied"
+                  : "/user/edit-profile"
+              }
+              className="w-1/2 rounded-sm bg-yellow-600 py-2 text-center font-semibold transition-all duration-300 hover:bg-yellow-500"
             >
-              <button>Edit profile</button>
+              Edit Profile
             </Link>
           </div>
 
-          {userData && userData?.subscription?.status !== "active" && (
+          {/* Cancel Subscription */}
+          {userData?.subscription?.status === "active" && (
             <button
-              onClick={hndleCancelSubscription}
-              className="bg-red-600 hover:bg-red-500 transition-all ease-in-out duration-300 py-2 rounded-sm text-base font-semibold text-center hover:scale-105"
+              onClick={handleCancelSubscription}
+              className="rounded-sm bg-red-600 py-2 text-center text-base font-semibold transition-all duration-300 hover:scale-105 hover:bg-red-500"
             >
-              Cancel subscription
+              Cancel Subscription
             </button>
           )}
         </div>

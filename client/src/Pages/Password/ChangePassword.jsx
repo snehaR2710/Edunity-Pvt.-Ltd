@@ -16,26 +16,25 @@ export function ChangePassword() {
     newPassword: "",
   });
 
-  // function to handle input box change
+  // Handle input change
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    setUserPassword({
-      ...userPassword,
+
+    setUserPassword((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
-  // functon to handle form submit
+  // Handle form submit
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // checking the fields are empty or not
     if (!userPassword.oldPassword || !userPassword.newPassword) {
       toast.error("All fields are mandatory");
       return;
     }
 
-    // validating the password using regex
     if (!isPassword(userPassword.newPassword)) {
       toast.error(
         "Minimum password length should be 8 with Uppercase, Lowercase, Number and Symbol"
@@ -43,76 +42,156 @@ export function ChangePassword() {
       return;
     }
 
-    // calling the api from auth slice
     const res = await dispatch(changePassword(userPassword));
 
-    // clearing the input fields
-    setUserPassword({
-      oldPassword: "",
-      newPassword: "",
-    });
+    if (res?.payload?.success) {
+      setUserPassword({
+        oldPassword: "",
+        newPassword: "",
+      });
 
-    // redirecting to profile page if password changed
-    if (res.payload.success) navigate("/user/profile");
+      navigate("/user/profile");
+    }
   };
 
   return (
     <HomeLayout>
-      {/* forget password container */}
-      <div className="flex items-center justify-center h-[100vh]">
-        {/* forget password card */}
+      <main
+        className="
+          min-h-[calc(100vh-120px)]
+          flex
+          items-center
+          justify-center
+          px-4
+          py-10
+          sm:px-6
+        "
+      >
         <form
           onSubmit={handleFormSubmit}
-          className="flex flex-col justify-center gap-6 rounded-lg p-4 text-white w-80 h-[26rem] shadow-[0_0_10px_black]"
+          className="
+            flex
+            w-full
+            max-w-sm
+            flex-col
+            justify-center
+            gap-5
+            rounded-lg
+            p-5
+            text-white
+            shadow-[0_0_10px_black]
+            sm:p-6
+          "
         >
-          <h1 className="text-center text-2xl font-bold">Change Password</h1>
+          {/* Heading */}
+          <h1 className="text-center text-2xl font-bold sm:text-3xl">
+            Change Password
+          </h1>
 
-          <div className="flex flex-col gap-1">
-            <label className="text-lg font-semibold" htmlFor="oldPassword">
+          {/* Old Password */}
+          <div className="flex flex-col gap-2">
+            <label
+              className="text-base font-semibold sm:text-lg"
+              htmlFor="oldPassword"
+            >
               Old Password
             </label>
+
             <input
               required
               type="password"
               name="oldPassword"
               id="oldPassword"
               placeholder="Enter your old password"
-              className="bg-transparent px-2 py-1 border"
+              className="
+                w-full
+                rounded-sm
+                border
+                border-gray-500
+                bg-transparent
+                px-3
+                py-2
+                text-sm
+                outline-none
+                transition
+                focus:border-yellow-500
+                sm:text-base
+              "
               value={userPassword.oldPassword}
               onChange={handlePasswordChange}
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label className="text-lg font-semibold" htmlFor="newPassword">
+          {/* New Password */}
+          <div className="flex flex-col gap-2">
+            <label
+              className="text-base font-semibold sm:text-lg"
+              htmlFor="newPassword"
+            >
               New Password
             </label>
+
             <input
               required
               type="password"
               name="newPassword"
               id="newPassword"
               placeholder="Enter your new password"
-              className="bg-transparent px-2 py-1 border"
+              className="
+                w-full
+                rounded-sm
+                border
+                border-gray-500
+                bg-transparent
+                px-3
+                py-2
+                text-sm
+                outline-none
+                transition
+                focus:border-yellow-500
+                sm:text-base
+              "
               value={userPassword.newPassword}
               onChange={handlePasswordChange}
             />
           </div>
 
-          <Link to={"/forgot-password"}>
-            <p className="link text-accent cursor-pointer flex items-center justify-center w-full gap-2">
-               Forgot password
-            </p>
+          {/* Forgot Password */}
+          <Link
+            to="/forgot-password"
+            className="
+              text-center
+              text-sm
+              text-accent
+              underline-offset-2
+              hover:underline
+              sm:text-base
+            "
+          >
+            Forgot password?
           </Link>
 
+          {/* Submit */}
           <button
-            className="w-full bg-yellow-600 hover:bg-yellow-700 transition-all ease-in-out duration-300 rounded-sm py-2 font-semibold text-lg cursor-pointer"
             type="submit"
+            className="
+              w-full
+              cursor-pointer
+              rounded-sm
+              bg-yellow-600
+              py-2
+              text-base
+              font-semibold
+              transition-all
+              duration-300
+              hover:bg-yellow-500
+              sm:text-lg
+            "
           >
             Change Password
           </button>
         </form>
-      </div>
+      </main>
     </HomeLayout>
   );
 }

@@ -6,44 +6,72 @@ import HomeLayout from "../Layouts/HomeLayout";
 export function AboutUs() {
   return (
     <HomeLayout>
-      <div className="pl-20 pt-20 flex flex-col text-white">
-        <div className=" flex items-center gap-5 mx-10">
-          <section className="w-1/2 space-y-10">
-            <h1 className="text-5xl font-serif text-yellow-500 font-semibold">
+      <div className="min-h-[90vh] w-full px-4 py-12 text-white sm:px-8 md:px-12 lg:px-20">
+
+        {/* ================= ABOUT SECTION ================= */}
+
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 lg:flex-row lg:gap-16">
+
+          {/* LEFT CONTENT */}
+
+          <section className="w-full space-y-6 text-center lg:w-1/2 lg:text-left">
+
+            <h1 className="text-3xl font-semibold text-yellow-500 sm:text-4xl md:text-5xl">
               Affordable and Quality Education
             </h1>
-            <p className="text-xl text-gray-200">
-              Our goal is to provide the affordable and quality education to the
-              world. We are providing the platform for the aspiring teachers and
-              students to share their creativity, skills and knowledge to each
-              other to empower and contribute in the growth and wellness of the
-              mankind.
+
+            <p className="text-base leading-7 text-gray-200 sm:text-lg md:text-xl">
+              Our goal is to provide affordable and quality education to the
+              world. We are providing a platform for aspiring teachers and
+              students to share their creativity, skills and knowledge with
+              each other to empower and contribute to the growth and wellness
+              of mankind.
             </p>
+
           </section>
 
-          <div className="w-1/2">
+          {/* RIGHT IMAGE */}
+
+          <div className="flex w-full justify-center lg:w-1/2">
+
             <img
-              id="test1"
+              src={aboutus}
+              alt="About us"
+              className="
+                h-auto
+                w-full
+                max-w-md
+                object-contain
+                drop-shadow-2xl
+                md:max-w-lg
+              "
               style={{
                 filter: "drop-shadow(0px 10px 10px rgb(0, 0, 0))",
               }}
-              className="drop-shadow-2xl"
-              src={aboutus}
-              alt="About us image"
             />
+
           </div>
+
         </div>
 
-        <div className="carousel w-1/2 my-16 m-auto">
-          {celebrities &&
-            celebrities.map((celebrity) => (
+        {/* ================= CAROUSEL ================= */}
+
+        <div className="mx-auto my-12 w-full max-w-4xl px-2 sm:my-16 sm:px-6">
+
+          <div className="carousel w-full">
+
+            {celebrities?.map((celebrity) => (
               <CarouselSlid
                 {...celebrity}
                 key={celebrity.slidNumber}
                 totalSlids={celebrities.length}
               />
             ))}
+
+          </div>
+
         </div>
+
       </div>
     </HomeLayout>
   );

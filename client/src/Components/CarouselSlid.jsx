@@ -1,17 +1,125 @@
+export function CarouselSlid({
+  image,
+  title,
+  description,
+  slidNumber,
+  totalSlids,
+}) {
+  const previousSlide =
+    slidNumber === 1 ? totalSlids : slidNumber - 1;
 
-export function CarouselSlid({image, title, description, slidNumber, totalSlids}) {
-    return(
-        <div id={`slide${slidNumber}`} className="carousel-item relative w-full">
-            <div className="flex flex-col items-center justify-center gap-4 px-[15%]">
-              <img src={image} className=" w-40 rounded-full border-2 border-gray-400"/>
-              <p className="text-xl text-gray-200">{description}</p>
-              <h3 className="text-2xl font-semibold font-serif">{title}</h3>
-              <div className=" absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                <a href={`#slide${(slidNumber === 1 ? totalSlids : (slidNumber - 1))}`} className="btn btn-circle">❮</a>
-                <a href={`#slide${(slidNumber) % totalSlids + 1}`} className="btn btn-circle">❯</a>
-              </div>
-            </div>
-          </div>
-    )
+  const nextSlide =
+    slidNumber === totalSlids ? 1 : slidNumber + 1;
+
+  return (
+    <div
+      id={`slide${slidNumber}`}
+      className="
+        carousel-item
+        relative
+        w-full
+      "
+    >
+      <div
+        className="
+          flex
+          w-full
+          flex-col
+          items-center
+          justify-center
+          gap-3
+          px-12
+          py-6
+          sm:gap-4
+          sm:px-[15%]
+        "
+      >
+
+        <img
+          src={image}
+          alt={title}
+          className="
+            h-24
+            w-24
+            rounded-full
+            border-2
+            border-gray-400
+            object-cover
+            sm:h-32
+            sm:w-32
+          "
+        />
+
+        <p
+          className="
+            max-w-2xl
+            text-center
+            text-sm
+            leading-relaxed
+            text-gray-200
+            sm:text-base
+            md:text-xl
+          "
+        >
+          {description}
+        </p>
+
+        <h3
+          className="
+            text-center
+            text-lg
+            font-semibold
+            font-serif
+            sm:text-xl
+            md:text-2xl
+          "
+        >
+          {title}
+        </h3>
+
+        {/* Navigation buttons */}
+
+        <div
+          className="
+            absolute
+            left-2
+            right-2
+            top-1/2
+            flex
+            -translate-y-1/2
+            justify-between
+            sm:left-5
+            sm:right-5
+          "
+        >
+          <a
+            href={`#slide${previousSlide}`}
+            className="
+              btn
+              btn-circle
+              btn-sm
+              sm:btn-md
+            "
+            aria-label="Previous slide"
+          >
+            ❮
+          </a>
+
+          <a
+            href={`#slide${nextSlide}`}
+            className="
+              btn
+              btn-circle
+              btn-sm
+              sm:btn-md
+            "
+            aria-label="Next slide"
+          >
+            ❯
+          </a>
+        </div>
+
+      </div>
+    </div>
+  );
 }
-{/* {"“Determination is the power that sees us through all our frustrations and obstacles. It helps us in building our willpower which is the very basis of success.”"} */}

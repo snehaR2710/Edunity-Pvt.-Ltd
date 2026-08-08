@@ -11,32 +11,34 @@ export function ResetPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const token = useParams()
+  const { resetToken } = useParams();
 
   const [data, setData] = useState({
     password: "",
-    resetToken: token.resetToken,
+    resetToken: resetToken,
   });
 
-  console.log("data", data);
-
-  // function to handle user input
+  // Handle input
   const handleUserInput = (event) => {
     const { name, value } = event.target;
-    const newData = { ...data, [name]: value };
-    setData(newData);
+
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  // function to handle form submit
+  // Handle form submit
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // check the empty field
+    // Check empty fields
     if (!data.password || !data.resetToken) {
       toast.error("All fields are mandatory");
       return;
     }
 
+    // Validate password
     if (!isPassword(data.password)) {
       toast.error(
         "Minimum password length should be 8 with Uppercase, Lowercase, Number and Symbol"
@@ -45,49 +47,95 @@ export function ResetPassword() {
     }
 
     const res = await dispatch(resetPassword(data));
-    console.log(res);
 
-    // redirecting to the login page
-    if (res.payload.success === true) {
+    console.log("Reset password response:", res);
+
+    // Redirect to login
+    if (res?.payload?.success === true) {
       navigate("/login");
     }
   };
 
   return (
     <HomeLayout>
-      <div
-        onSubmit={handleFormSubmit}
-        className="flex items-center justify-center h-[100vh]"
-      >
-        {/* forget password card */}
-        <form className="flex flex-col justify-center gap-6 rounded-lg p-4 text-white w-80 h-[26rem] shadow-[0_0_10px_black]">
-          <h1 className="text-center text-2xl font-bold">Reset Password</h1>
+      <main className="min-h-[calc(100vh-120px)] flex items-center justify-center px-4 py-10 sm:px-6">
 
-          <div className="flex flex-col gap-1">
-            <label className="text-lg font-semibold" htmlFor="email">
+        <form
+          onSubmit={handleFormSubmit}
+          className="
+            w-full
+            max-w-sm
+            flex
+            flex-col
+            justify-center
+            gap-5
+            rounded-lg
+            p-5
+            sm:p-6
+            text-white
+            shadow-[0_0_10px_black]
+          "
+        >
+          {/* Heading */}
+          <h1 className="text-center text-2xl sm:text-3xl font-bold">
+            Reset Password
+          </h1>
+
+          {/* Password */}
+          <div className="flex flex-col gap-2">
+            <label
+              className="text-base sm:text-lg font-semibold"
+              htmlFor="password"
+            >
               New Password
             </label>
+
             <input
               required
               type="password"
               name="password"
               id="password"
               placeholder="Enter your new password"
-              className="bg-transparent px-2 py-1 border"
+              className="
+                w-full
+                rounded-sm
+                border
+                border-gray-500
+                bg-transparent
+                px-3
+                py-2
+                text-sm
+                outline-none
+                transition
+                focus:border-yellow-500
+                sm:text-base
+              "
               value={data.password}
               onChange={handleUserInput}
             />
           </div>
 
-
+          {/* Submit */}
           <button
-            className="w-full bg-yellow-600 hover:bg-yellow-500 transition-all ease-in-out duration-300 rounded-sm py-2 font-semibold text-lg cursor-pointer"
+            className="
+              w-full
+              rounded-sm
+              bg-yellow-600
+              py-2
+              text-base
+              font-semibold
+              cursor-pointer
+              transition-all
+              duration-300
+              hover:bg-yellow-500
+              sm:text-lg
+            "
             type="submit"
           >
             Reset Password
           </button>
         </form>
-      </div>
+      </main>
     </HomeLayout>
   );
 }
