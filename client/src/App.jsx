@@ -8,6 +8,7 @@ import { ContactUs } from "./Pages/ContactUs";
 import { CourseDescription } from "./Pages/Courses/CourseDescription";
 import { CourseLists } from "./Pages/Courses/CourseList";
 import CreateCourse from "./Pages/Courses/CreateCourse";
+// import AdminDashboard from "./Pages/Dashboard/AdminDashboard";
 import { AdminDashboard } from "./Pages/Dashboard/AdminDashboard";
 import { DisplayLectures } from "./Pages/Dashboard/DisplayLectures";
 import { Denied } from "./Pages/Denied";
